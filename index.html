@@ -1,0 +1,28 @@
+<html ng-app="YmapsDemo">
+<head>
+	<title>Yandex Maps API as an Angular JS direcitive</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+	<style type="text/css">
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+		.controls {
+			height: 20%;
+		}
+		.map_container {
+			width: 100%;
+			height: 80%;
+			display: block;
+		}
+	</style>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script type="text/javascript" src="/blog/assets/angular-lazy-script-loading/scriptService.js"></script>
+	<script src="angular-ymaps.js"></script>
+	<script src="app.js"></script>
+</head>
+<body ng-controller="MapCtrl">
+	<div class="controls"></div>
+	<yandex-map class="map_container" center="map.center" zoom="map.zoom"></yandex-map>
+</body>
+</html>
