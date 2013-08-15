@@ -1,11 +1,57 @@
 angular.module('ymaps', ['script'])
 .constant('ymapConfig', {
+    mapBehaviors: ['default'],
+    markerOptions: {
+        preset: 'twirl#darkgreenIcon'
+    },
 	fitMarkers: true
 })
-.controller('YmapController', ['$scope', '$element', function ($scope, $element) {
-
+.controller('YmapController', ['$scope', 'ymapConfig', function ($scope, ymapConfig) {
+    "use strict";
+    //brought from underscore http://underscorejs.org/#debounce
+    function debounce(func, wait) {
+        var timeout = null;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                func.apply(context, args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        }
+    }
+    var markerMargin = 0.1,
+        fitMarkers = debounce(function () {
+            var bounds = $scope.markers.getBounds(),
+            //отодвигаем маркеры от края карты и ограничиваем максимальное увеличение
+                topRight = [
+                    bounds[1][0] + markerMargin,
+                    bounds[1][1] + markerMargin
+                ],
+                bottomLeft = [
+                    bounds[0][0] - markerMargin,
+                    bounds[0][1] - markerMargin
+                ];
+            $scope.map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+        }, 100);
+    this.addMarker = function(coordinates, properties) {
+        var placeMark = new ymaps.Placemark(coordinates, properties);
+        $scope.markers.add(placeMark);
+        if(ymapConfig.fitMarkers) {
+            fitMarkers();
+        }
+        return placeMark;
+    };
+    this.removeMarker = function (marker) {
+        $scope.markers.remove(marker);
+        if(ymapConfig.fitMarkers) {
+            fitMarkers();
+        }
+    };
 }])
-.directive('yandexMap', ['$compile', '$script', function ($compile, $script) {
+.directive('yandexMap', ['$compile', '$script', 'ymapConfig', function ($compile, $script, config) {
+    "use strict";
 	return {
 		restrict: 'EA',
 		scope: {
@@ -21,14 +67,57 @@ angular.module('ymaps', ['script'])
 						$scope.map = new ymaps.Map(element[0], {
 			                center   : $scope.center || [0, 0],
 			                zoom     : $scope.zoom || 0,
-			                behaviors: ['default', 'scrollZoom']
+			                behaviors: config.mapBehaviors
 			            });
-			        });
-			        element.append(childNodes);
-                    $compile(childNodes)($scope.$parent);
+                        $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
+                        $scope.markers = new ymaps. GeoObjectCollection({}, config.markerOptions);
+                        $scope.map.geoObjects.add($scope.markers);
+                        element.append(childNodes);
+                        $scope.$apply(function() {
+                            $compile(childNodes)($scope.$parent);
+                        });
+                    });
 				});
             }    
 		},
 		controller: 'YmapController'
 	}
-}]);
+}])
+.directive('ymapMarker', function () {
+    "use strict";
+    return {
+        restrict: "EA",
+        require : '^yandexMap',
+        scope   : {
+            coordinates: '=',
+            index: '='
+        },
+        link    : function ($scope, elm, attr, mapCtrl) {
+            var marker;
+            function pickMarker() {
+                if (marker) {
+                    marker.geometry.setCoordinates($scope.coordinates);
+                }
+                else {
+                    marker = mapCtrl.addMarker($scope.coordinates, {iconContent: $scope.index});
+                }
+            }
+
+            $scope.$watch("index", function (newVal) {
+                if (marker) {
+                    marker.properties.set('iconContent', newVal)
+                }
+            });
+            $scope.$watch("coordinates", function (newVal) {
+                if (newVal) {
+                    pickMarker();
+                }
+            }, true);
+            $scope.$on('$destroy', function () {
+                if (marker) {
+                    mapCtrl.removeMarker(marker);
+                }
+            });
+        }
+    };
+});

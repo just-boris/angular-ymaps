@@ -7,22 +7,89 @@
 			width: 100%;
 			height: 100%;
 		}
-		.controls {
+        yandex-map {
+            display: block;
+        }
+		.header {
 			height: 20%;
+            text-align: center;
 		}
+        .demo_content {
+            min-height: 80%;
+        }
+        .controls .table tr>td{
+            vertical-align: middle;
+        }
+        .controls .table .close {
+            float: none;
+        }
+        .add_button {
+            margin-bottom: 10px;
+        }
 		.map_container {
-			width: 100%;
-			height: 80%;
-			display: block;
-		}
+            height: 100%;
+        }
+        .description {
+            padding: 15px;
+        }
 	</style>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 	<script type="text/javascript" src="/blog/assets/angular-lazy-script-loading/scriptService.js"></script>
 	<script src="angular-ymaps.js"></script>
 	<script src="app.js"></script>
 </head>
 <body ng-controller="MapCtrl">
-	<div class="controls"></div>
-	<yandex-map class="map_container" center="map.center" zoom="map.zoom"></yandex-map>
+	<div class="header">
+        <h1>Самый простой способ работы с Яндекс-картами</h1>
+	</div>
+    <div class="demo_content row">
+        <div class="controls col-sm-6">
+            <table class="table"><thead>
+                <tr>
+                    <th>#</th><th>Широта</th><th>Долгота</th><th></th>
+                </tr>
+            </thead><tbody>
+                <tr ng-repeat="marker in markers">
+                    <td>{{$index+1}}</td>
+                    <td><input type="text" ng-model="marker.coordinates[0]" class="form-control" /></td>
+                    <td><input type="text" ng-model="marker.coordinates[1]" class="form-control" /></td>
+                    <td><button type="button" class="close" aria-hidden="true" ng-click="removeMarker(marker)">&times;</button></td>
+                </tr>
+                <tr ng-show="addingMarker">
+                    <td>*</td>
+                    <td><input type="text" ng-model="markerLat" placeholder="lat" class="form-control" required /></td>
+                    <td><input type="text" ng-model="markerLon" placeholder="lon" class="form-control" required /></td>
+                    <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
+                            title="Добавить">+</button></td>
+                </tr>
+            </tbody></table>
+            <button type="button" class="btn btn-default btn-block add_button" ng-hide="addingMarker"
+                    ng-click="addMarker()">Добавить маркер</button>
+        </div>
+        <yandex-map class="map_container col-sm-6" center="map.center" zoom="map.zoom">
+            <ymap-marker coordinates="marker.coordinates" index="$index+1" ng-repeat="marker in markers"></ymap-marker>
+        </yandex-map>
+    </div>
+    <div class="description">
+        <h3>Подключение и использование</h3>
+        <p>Это модуль для <a href="http://angularjs.org">AngularJS</a>, предназначенный для простого подключения и
+            работы с Яндекс-картами. Чтобы начать использовать, подключите <a href="angular-ymaps.js">этот скрипт</a>
+            и добавьте в зависимости модуль <code>ymaps</code>. Теперь можно встраивать карту, просто написав нужный тег:
+        </p>
+        <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
+        <h4>Параметры:</h4>
+        <p>При создании карты, нужно указать ей два обязательных атрибута.</p>
+        <ul>
+            <li><b>center</b>(Array) - массив из двух чисел, широта и долгота центра карты</li>
+            <li><b>zoom</b>(Number) - число, от 1 до 15, масштаб карты. Во избежание ошибок нужно задавать
+                существующий уровень масштаба для указанной области</li>
+        </ul>
+        <p>Добавление маркеров на карту сделано в стиле Angular &mdash; для этого нужно добавить тег
+            <code>ymap-marker</code> внутрь тега карты.</p>
+        <pre>&lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+    &lt;ymap-marker coordinates=&quot;marker.coordinates&quot; index=&quot;$index+1&quot;&gt;&lt;/ymap-marker&gt;
+&lt;/yandex-map&gt;</pre>
+        <p>Иделально работает с <code>ng-repeat</code>, можно выводить сразу массив точек</p>
+    </div>
 </body>
 </html>
