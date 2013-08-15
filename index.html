@@ -31,6 +31,11 @@
         }
         .description {
             padding: 15px;
+            max-width: 940px;
+            margin: 0 auto;
+        }
+        .description h5 {
+            font-weight: bold;
         }
 	</style>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
@@ -77,7 +82,7 @@
             и добавьте в зависимости модуль <code>ymaps</code>. Теперь можно встраивать карту, просто написав нужный тег:
         </p>
         <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
-        <h4>Параметры yandex-map:</h4>
+        <h5>Параметры yandex-map:</h5>
         <p>При создании карты, нужно указать ей два обязательных атрибута.</p>
         <ul>
             <li><b>center</b>(Array) - массив из двух чисел, широта и долгота центра карты</li>
@@ -86,14 +91,29 @@
         </ul>
         <p>Добавление маркеров на карту сделано в стиле Angular &mdash; для этого нужно добавить тег
             <code>ymap-marker</code> внутрь тега карты. Эта директива идеально работает в сочетании с
-            <code>ng-repeat</code>, поэтому можно легко вывести сразу массив точек</p>
+            <code>ng-repeat</code>, поэтому можно легко вывести сразу массив из точек:</p>
         <pre><code>&lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
     &lt;ymap-marker coordinates=&quot;marker.coordinates&quot; index=&quot;$index+1&quot; ng-repeat="marker in markers"&gt;&lt;/ymap-marker&gt;
 &lt;/yandex-map&gt;</code></pre>
-        <h4>Параметры ymap-marker:</h4>
+        <h5>Параметры ymap-marker:</h5>
         <ul>
             <li><b>coordinates</b>(Array) - массив из двух чисел, широта и долгота маркера на карте</li>
             <li><b>index</b>(String) - идентификатор маркера, который на нем пишется</li>
+            <li><b>properties</b>(Object) - свойства метки, передаются в
+                <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a></li>
+        </ul>
+        <p>Кроме этого, можно управлять некоторыми глобальными свойствами, вынесенными в константу
+            <code>ymapsConfig</code></p>
+        <ul>
+            <li><b>mapBehaviors</b>(Array) - возможные поведения карты, массив ключей, которые принимает
+                <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
+                Стандартное значение: <i>['default']</i>
+            <li><b>markerOptions</b>(Object) - опции, передаваемые <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">
+                ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров на карте. Стандартное значение:
+                <i>{preset: 'twirl#darkgreenIcon'}</i></li>
+            <li><b>fitMarkers</b>(Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было
+                видно все точки на карте. Стандартное значение: <i>true</i>
+            </li>
         </ul>
     </div>
     <script type="text/javascript">
