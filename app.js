@@ -15,8 +15,6 @@ angular.module('YmapsDemo', ['ymaps']).controller('MapCtrl', function ($scope) {
         $scope.markers.splice(index, 1)
     };
     $scope.submitMarker = function(lat, lon) {
-        lat = parseInt(lat, 10);
-        lon = parseInt(lon, 10);
         if(lat && lon) {
             $scope.markers.push({coordinates: [lat, lon]});
             $scope.addingMarker = false;

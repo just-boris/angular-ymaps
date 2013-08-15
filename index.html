@@ -1,7 +1,7 @@
 <html ng-app="YmapsDemo">
 <head>
 	<title>Yandex Maps API as an Angular JS direcitive</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
 	<style type="text/css">
 		html, body {
 			width: 100%;
@@ -33,7 +33,7 @@
             padding: 15px;
         }
 	</style>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 	<script type="text/javascript" src="/blog/assets/angular-lazy-script-loading/scriptService.js"></script>
 	<script src="angular-ymaps.js"></script>
 	<script src="app.js"></script>
@@ -77,7 +77,7 @@
             и добавьте в зависимости модуль <code>ymaps</code>. Теперь можно встраивать карту, просто написав нужный тег:
         </p>
         <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
-        <h4>Параметры:</h4>
+        <h4>Параметры yandex-map:</h4>
         <p>При создании карты, нужно указать ей два обязательных атрибута.</p>
         <ul>
             <li><b>center</b>(Array) - массив из двух чисел, широта и долгота центра карты</li>
@@ -85,11 +85,26 @@
                 существующий уровень масштаба для указанной области</li>
         </ul>
         <p>Добавление маркеров на карту сделано в стиле Angular &mdash; для этого нужно добавить тег
-            <code>ymap-marker</code> внутрь тега карты.</p>
-        <pre>&lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
-    &lt;ymap-marker coordinates=&quot;marker.coordinates&quot; index=&quot;$index+1&quot;&gt;&lt;/ymap-marker&gt;
-&lt;/yandex-map&gt;</pre>
-        <p>Иделально работает с <code>ng-repeat</code>, можно выводить сразу массив точек</p>
+            <code>ymap-marker</code> внутрь тега карты. Эта директива идеально работает в сочетании с
+            <code>ng-repeat</code>, поэтому можно легко вывести сразу массив точек</p>
+        <pre><code>&lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+    &lt;ymap-marker coordinates=&quot;marker.coordinates&quot; index=&quot;$index+1&quot; ng-repeat="marker in markers"&gt;&lt;/ymap-marker&gt;
+&lt;/yandex-map&gt;</code></pre>
+        <h4>Параметры ymap-marker:</h4>
+        <ul>
+            <li><b>coordinates</b>(Array) - массив из двух чисел, широта и долгота маркера на карте</li>
+            <li><b>index</b>(String) - идентификатор маркера, который на нем пишется</li>
+        </ul>
     </div>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39285873-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 </body>
 </html>

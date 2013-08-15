@@ -6,59 +6,56 @@ angular.module('ymaps', ['script'])
     },
 	fitMarkers: true
 })
-.controller('YmapController', ['$scope', 'ymapConfig', function ($scope, ymapConfig) {
+.controller('YmapController', ['$scope', function ($scope) {
     "use strict";
-    //brought from underscore http://underscorejs.org/#debounce
-    function debounce(func, wait) {
-        var timeout = null;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
-                timeout = null;
-                func.apply(context, args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        }
-    }
-    var markerMargin = 0.1,
-        fitMarkers = debounce(function () {
-            var bounds = $scope.markers.getBounds(),
-            //отодвигаем маркеры от края карты и ограничиваем максимальное увеличение
-                topRight = [
-                    bounds[1][0] + markerMargin,
-                    bounds[1][1] + markerMargin
-                ],
-                bottomLeft = [
-                    bounds[0][0] - markerMargin,
-                    bounds[0][1] - markerMargin
-                ];
-            $scope.map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
-        }, 100);
     this.addMarker = function(coordinates, properties) {
         var placeMark = new ymaps.Placemark(coordinates, properties);
         $scope.markers.add(placeMark);
-        if(ymapConfig.fitMarkers) {
-            fitMarkers();
-        }
         return placeMark;
     };
     this.removeMarker = function (marker) {
         $scope.markers.remove(marker);
-        if(ymapConfig.fitMarkers) {
-            fitMarkers();
-        }
     };
 }])
 .directive('yandexMap', ['$compile', '$script', 'ymapConfig', function ($compile, $script, config) {
     "use strict";
+    function initAutoFit(map, collection) {
+        //brought from underscore http://underscorejs.org/#debounce
+        function debounce(func, wait) {
+            var timeout = null;
+            return function() {
+                var context = this, args = arguments;
+                var later = function() {
+                    timeout = null;
+                    func.apply(context, args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            }
+        }
+        var markerMargin = 0.1,
+            fitMarkers = debounce(function (event) {
+                var bounds = event.get('newBounds'),
+                    //make some margins from
+                    topRight = [
+                        bounds[1][0] + markerMargin,
+                        bounds[1][1] + markerMargin
+                    ],
+                    bottomLeft = [
+                        bounds[0][0] - markerMargin,
+                        bounds[0][1] - markerMargin
+                    ];
+                map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+            }, 100);
+        collection.events.add('boundschange', fitMarkers);
+    }
 	return {
 		restrict: 'EA',
 		scope: {
 			center: '=',
 			zoom: '='
 		},
-		compile: function(tElement, tAttrs) {
+		compile: function(tElement) {
 			var childNodes = tElement.contents();
             tElement.html('');
             return function($scope, element) {
@@ -72,6 +69,9 @@ angular.module('ymaps', ['script'])
                         $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
                         $scope.markers = new ymaps. GeoObjectCollection({}, config.markerOptions);
                         $scope.map.geoObjects.add($scope.markers);
+                        if(config.fitMarkers) {
+                            initAutoFit($scope.map, $scope.markers);
+                        }
                         element.append(childNodes);
                         $scope.$apply(function() {
                             $compile(childNodes)($scope.$parent);
@@ -90,16 +90,21 @@ angular.module('ymaps', ['script'])
         require : '^yandexMap',
         scope   : {
             coordinates: '=',
-            index: '='
+            index: '=',
+            properties: '='
         },
         link    : function ($scope, elm, attr, mapCtrl) {
             var marker;
             function pickMarker() {
+                var coord = [
+                        parseInt($scope.coordinates[0], 10),
+                        parseInt($scope.coordinates[1], 10)
+                    ];
                 if (marker) {
-                    marker.geometry.setCoordinates($scope.coordinates);
+                    marker.geometry.setCoordinates(coord);
                 }
                 else {
-                    marker = mapCtrl.addMarker($scope.coordinates, {iconContent: $scope.index});
+                    marker = mapCtrl.addMarker(coord, angular.extend({iconContent: $scope.index}, $scope.properties));
                 }
             }
 
