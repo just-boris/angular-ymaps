@@ -38,8 +38,7 @@
             font-weight: bold;
         }
 	</style>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
-	<script type="text/javascript" src="/blog/assets/angular-lazy-script-loading/scriptService.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 	<script src="angular-ymaps.js"></script>
 	<script src="app.js"></script>
 </head>
@@ -79,7 +78,8 @@
         <h3>Подключение и использование</h3>
         <p>Это модуль для <a href="http://angularjs.org">AngularJS</a>, предназначенный для простого подключения и
             работы с Яндекс-картами. Чтобы начать использовать, подключите <a href="angular-ymaps.js">этот скрипт</a>
-            и добавьте в зависимости модуль <code>ymaps</code>.</p>
+            (или <a href="angular-ymaps.min.js">упакованную версию</a>) и добавьте в зависимости модуль
+            <code>ymaps</code>.</p>
         <pre><code>angular.module('myModule', ['ymaps']);</code></pre>
         <p>Теперь можно встраивать карту, просто написав нужный тег:</p>
         <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
