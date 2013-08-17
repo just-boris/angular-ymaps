@@ -1,6 +1,7 @@
 <html ng-app="YmapsDemo">
 <head>
 	<title>Yandex Maps API as an Angular JS direcitive</title>
+    <meta charset='utf-8'>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
 	<style type="text/css">
 		html, body {
@@ -11,7 +12,6 @@
             display: block;
         }
 		.header {
-			height: 20%;
             text-align: center;
 		}
         .demo_content {
@@ -62,8 +62,8 @@
                 </tr>
                 <tr ng-show="addingMarker">
                     <td>*</td>
-                    <td><input type="text" ng-model="markerLat" placeholder="lat" class="form-control" required /></td>
-                    <td><input type="text" ng-model="markerLon" placeholder="lon" class="form-control" required /></td>
+                    <td><input type="text" ng-model="markerLat" placeholder="Lat" class="form-control" required /></td>
+                    <td><input type="text" ng-model="markerLon" placeholder="Lon" class="form-control" required /></td>
                     <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
                             title="Добавить">+</button></td>
                 </tr>
@@ -79,15 +79,16 @@
         <h3>Подключение и использование</h3>
         <p>Это модуль для <a href="http://angularjs.org">AngularJS</a>, предназначенный для простого подключения и
             работы с Яндекс-картами. Чтобы начать использовать, подключите <a href="angular-ymaps.js">этот скрипт</a>
-            и добавьте в зависимости модуль <code>ymaps</code>. Теперь можно встраивать карту, просто написав нужный тег:
-        </p>
+            и добавьте в зависимости модуль <code>ymaps</code>.</p>
+        <pre><code>angular.module('myModule', ['ymaps']);</code></pre>
+        <p>Теперь можно встраивать карту, просто написав нужный тег:</p>
         <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
         <h5>Параметры yandex-map:</h5>
         <p>При создании карты, нужно указать ей два обязательных атрибута.</p>
         <ul>
             <li><b>center</b>(Array) - массив из двух чисел, широта и долгота центра карты</li>
-            <li><b>zoom</b>(Number) - число, от 1 до 15, масштаб карты. Во избежание ошибок нужно задавать
-                существующий уровень масштаба для указанной области</li>
+            <li><b>zoom</b>(Number) - число, от 0 до 23, масштаб карты. Во избежание ошибок нужно задавать
+                разрешенный масштаб для указанной области</li>
         </ul>
         <p>Добавление маркеров на карту сделано в стиле Angular &mdash; для этого нужно добавить тег
             <code>ymap-marker</code> внутрь тега карты. Эта директива идеально работает в сочетании с
