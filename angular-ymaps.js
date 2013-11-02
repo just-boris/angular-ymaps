@@ -143,8 +143,8 @@ angular.module('ymaps', [])
             var marker;
             function pickMarker() {
                 var coord = [
-                    parseInt($scope.coordinates[0], 10),
-                    parseInt($scope.coordinates[1], 10)
+                    parseFloat($scope.coordinates[0]),
+                    parseFloat($scope.coordinates[1])
                 ];
                 if (marker) {
                     marker.geometry.setCoordinates(coord);
