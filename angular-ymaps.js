@@ -1,3 +1,4 @@
+/*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
     "use strict";
@@ -21,49 +22,65 @@ angular.module('ymaps', [])
     }
     var loadHistory = [], //кэш загруженных файлов
         pendingPromises = {}; //обещания на текущие загруки
-    return {
-        get: function(url) {
-            var deferred = $q.defer();
-            if(loadHistory.indexOf(url) !== -1) {
-                deferred.resolve();
-            }
-            else if(pendingPromises[url]) {
-                return pendingPromises[url];
-            } else {
-                loadScript(url, function() {
-                    delete pendingPromises[url];
-                    loadHistory.push(url);
-                    //обязательно использовать `$apply`, чтобы сообщить
-                    //angular о том, что что-то произошло
-                    $rootScope.$apply(function() {
-                        deferred.resolve();
-                    });
+    return function(url) {
+        var deferred = $q.defer();
+        if(loadHistory.indexOf(url) !== -1) {
+            deferred.resolve();
+        }
+        else if(pendingPromises[url]) {
+            return pendingPromises[url];
+        } else {
+            loadScript(url, function() {
+                delete pendingPromises[url];
+                loadHistory.push(url);
+                //обязательно использовать `$apply`, чтобы сообщить
+                //angular о том, что что-то произошло
+                $rootScope.$apply(function() {
+                    deferred.resolve();
                 });
-                pendingPromises[url] = deferred.promise;
-            }
-            return deferred.promise;
+            });
+            pendingPromises[url] = deferred.promise;
+        }
+        return deferred.promise;
+    };
+}])
+.factory('ymapsLoader', ['$script', function($script) {
+    "use strict";
+    var scriptPromise = $script('//api-maps.yandex.ru/2.0.30/?load=package.standard,package.clusters&mode=release&lang=ru-RU&ns=ymaps').then(function() {
+        return ymaps;
+    });
+    return {
+        ready: function(callback) {
+            scriptPromise.then(function(ymaps) {
+                ymaps.ready(function() {
+                    callback(ymaps);
+                });
+            });
         }
     };
 }])
-.constant('ymapConfig', {
+.constant('ymapsConfig', {
     mapBehaviors: ['default'],
     markerOptions: {
         preset: 'twirl#darkgreenIcon'
     },
     fitMarkers: true
 })
-.controller('YmapController', ['$scope', function ($scope) {
+.controller('YmapController', ['$scope', 'ymapsLoader', function ($scope, ymapsLoader) {
     "use strict";
-    this.addMarker = function(coordinates, properties) {
-        var placeMark = new ymaps.Placemark(coordinates, properties);
-        $scope.markers.add(placeMark);
-        return placeMark;
-    };
-    this.removeMarker = function (marker) {
-        $scope.markers.remove(marker);
-    };
+    var self = this;
+    ymapsLoader.ready(function(ymaps) {
+        self.addMarker = function(coordinates, properties) {
+            var placeMark = new ymaps.Placemark(coordinates, properties);
+            $scope.markers.add(placeMark);
+            return placeMark;
+        };
+        self.removeMarker = function (marker) {
+            $scope.markers.remove(marker);
+        };
+    });
 }])
-.directive('yandexMap', ['$compile', '$script', 'ymapConfig', function ($compile, $script, config) {
+.directive('yandexMap', ['$compile', 'ymapsLoader', 'ymapsConfig', function ($compile, ymapsLoader, config) {
     "use strict";
     function initAutoFit(map, collection) {
         //brought from underscore http://underscorejs.org/#debounce
@@ -105,23 +122,21 @@ angular.module('ymaps', [])
             var childNodes = tElement.contents();
             tElement.html('');
             return function($scope, element) {
-                $script.get('//api-maps.yandex.ru/2.0.30/?load=package.standard,package.clusters&mode=release&lang=ru-RU&ns=ymaps').then(function() {
-                    ymaps.ready(function() {
-                        $scope.map = new ymaps.Map(element[0], {
-                            center   : $scope.center || [0, 0],
-                            zoom     : $scope.zoom || 0,
-                            behaviors: config.mapBehaviors
-                        });
-                        $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
-                        $scope.markers = new ymaps. GeoObjectCollection({}, config.markerOptions);
-                        $scope.map.geoObjects.add($scope.markers);
-                        if(config.fitMarkers) {
-                            initAutoFit($scope.map, $scope.markers);
-                        }
-                        element.append(childNodes);
-                        $scope.$apply(function() {
-                            $compile(childNodes)($scope.$parent);
-                        });
+                ymapsLoader.ready(function(ymaps) {
+                    $scope.map = new ymaps.Map(element[0], {
+                        center   : $scope.center || [0, 0],
+                        zoom     : $scope.zoom || 0,
+                        behaviors: config.mapBehaviors
+                    });
+                    $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
+                    $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
+                    $scope.map.geoObjects.add($scope.markers);
+                    if(config.fitMarkers) {
+                        initAutoFit($scope.map, $scope.markers);
+                    }
+                    element.append(childNodes);
+                    $scope.$apply(function() {
+                        $compile(childNodes)($scope.$parent);
                     });
                 });
             };
