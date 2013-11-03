@@ -4,8 +4,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         karma: {
-            unit: {
+            options: {
                 configFile: 'karma.conf.js'
+            },
+            unit: {},
+            travis: {
+                browsers: ['Firefox']
             }
         },
         jshint: {
@@ -52,7 +56,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadTasks('tasks/');
 
-    grunt.registerTask('build', ['jshint', 'karma', 'concat', 'uglify']);
+    grunt.registerTask('test', 'Run tests on singleRun karma server', function() {
+        if (process.env.TRAVIS) {
+            //this task can be executed in Travis-CI
+            grunt.task.run('karma:travis');
+        } else {
+            grunt.task.run('karma:unit');
+        }
+    });
+
+    grunt.registerTask('build', ['jshint', 'test', 'concat', 'uglify']);
     grunt.registerTask('demo', ['site', 'copy']);
     grunt.registerTask('default', ['build', 'demo']);
     return grunt;
