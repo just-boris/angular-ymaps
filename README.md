@@ -22,8 +22,7 @@ Yandex Maps API as an Angular JS direcitive.
   - `<ymap-marker>` - маркер на карте, вставляется только внутрь тега `<yandex-map>`
 
 ####Тег yandex-map:
-
-        <yandex-map center="map.center" zoom="map.zoom"></yandex-map>
+<pre ng-non-bindable><code data-language="HTML"><yandex-map center="map.center" zoom="map.zoom"></yandex-map></code></pre>
 
 Добавляет Яндекс-карту на страницу. Размеры карты определяются размерами элемента, их можно задать в css. При
 создании нужно указать два обязательных атрибута:
@@ -58,12 +57,12 @@ Yandex Maps API as an Angular JS direcitive.
 ####Карта заданного масштаба с одним маркером в центре
 
 Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера
-
-    <div ng-init="coords=[55.22, 35.33]">
-        <yandex-map center="coords" zoom="'10'">
-            <ymap-marker coordinates="coords"></ymap-marker>
-        </yandex-map>
-    </div>
+<pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.22, 35.33]">
+    <yandex-map center="coords" zoom="'10'">
+        <ymap-marker coordinates="coords"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
 
 ####Маркер другого цвета
 
@@ -71,83 +70,81 @@ Yandex Maps API as an Angular JS direcitive.
 примере
 
 **JS-код**
-
-    //кофигурация модуля, использующего карты
-    angular.module('MyApp', [ymaps]).config(function(ymapsConfig) {
-        //выставляем синий цвет иконкам вместо зеленого
-        ymapsConfig.markerOptions.preset = 'twirl#darkblueDotIcon';
-    });
+<pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
+angular.module('MyApp', [ymaps]).config(function(ymapsConfig) {
+    //выставляем синий цвет иконкам вместо зеленого
+    ymapsConfig.markerOptions.preset = 'twirl#darkblueDotIcon';
+});
+</code></pre>
 
 **HTML**
-
-    <div ng-init="coords=[55.22, 35.33]">
-        <yandex-map center="coords" zoom="'10'">
-            <!-- а маркер теперь синий! -->
-            <ymap-marker coordinates="coords"></ymap-marker>
-        </yandex-map>
-    </div>
-
+<pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.22, 35.33]">
+    <yandex-map center="coords" zoom="'10'">
+        <!-- а маркер теперь синий! -->
+        <ymap-marker coordinates="coords"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
 
 ####Маркеры на карте из массива
 С помощью Angular JS эта задача решается крайне легко! Пример в действии можно увидеть прямо на этой странице
 
 **JS-код**
-
-    //нам нужно создать контроллер, если у вас его еще нет
-    angular.module('MyApp', [ymaps]).controller('MapCtrl', function($scope) {
-        //создаем массив координат. При желании его можно загружать и с сервера,
-        //подробнее об этом - в документации Angular
-        $scope.markers = [
-            [54.46, 38.31],
-            [53.57, 37.13],
-            [53.14, 37.59],
-        ];
-        //настройки положения карты
-        $scope.map = {
-            center: [53.57, 37.13], zoom: 12
-        }
-    });
+<pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
+angular.module('MyApp', [ymaps]).controller('MapCtrl', function($scope) {
+    //создаем массив координат. При желании его можно загружать и с сервера,
+    //подробнее об этом - в документации Angular
+    $scope.markers = [
+        [54.46, 38.31],
+        [53.57, 37.13],
+        [53.14, 37.59],
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [53.57, 37.13], zoom: 12
+    }
+});
+</code></pre>
 
 **HTML**
-
-    <div ng-controller="MapCtrl">
-        <yandex-map center="map.center" zoom="map.zoom">
-            <!-- директива ng-repeat создаст все маркеры одним кодом  -->
-            <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker"></ymap-marker>
-        </yandex-map>
-    </div>
-
+<pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- директива ng-repeat создаст все маркеры одним кодом  -->
+        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
 
 ####Метки с текстом на карте
 Этот пример, почти такой же, как и предыдущий, только нужно загрузить больше данных
 
 **JS-код**
-
-    angular.module('MyApp', [ymaps])).config(function(ymapsConfig) {
-        //нужно сменить preset у карты, на специальный текстовый
-        ymapsConfig.markerOptions.preset = 'twirl#darkgreenStretchyIcon';
-    });
-    .controller('MapCtrl', function($scope) {
-        //создаем массив с данными для меток
-        $scope.markers = [
-            {coordinates:[54.46, 38.31], title: 'Пункт А'}
-            {coordinates:[53.57, 37.13], title: 'Пункт Б'}
-            {coordinates:[53.14, 37.59], title: 'Запасной пункт Б'}
-        ];
-        //настройки положения карты
-        $scope.map = {
-            center: [53.57, 37.13], zoom: 12
-        }
-    });
+<pre><code data-language="javascript">angular.module('MyApp', [ymaps])).config(function(ymapsConfig) {
+    //нужно сменить preset у карты на специальный текстовый
+    ymapsConfig.markerOptions.preset = 'twirl#darkgreenStretchyIcon';
+});
+.controller('MapCtrl', function($scope) {
+    //создаем массив с данными для меток
+    $scope.markers = [
+        {coordinates:[54.46, 38.31], title: 'Пункт А'}
+        {coordinates:[53.57, 37.13], title: 'Пункт Б'}
+        {coordinates:[53.14, 37.59], title: 'Запасной пункт Б'}
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [53.57, 37.13], zoom: 12
+    }
+});
+</code></pre>
 
 **HTML**
-
-    <div ng-controller="MapCtrl">
-        <yandex-map center="map.center" zoom="map.zoom">
-            <!-- загружаем текст для метки в атрибут index -->
-            <ymap-marker ng-repeat="marker in markers" index="marker.text" coordinates="marker.coordinates"></ymap-marker>
-        </yandex-map>
-    </div>
+<pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- загружаем текст для метки в атрибут index -->
+        <ymap-marker ng-repeat="marker in markers" index="marker.text" coordinates="marker.coordinates"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
 
 Но это еще не все, есть и другие варианты примения, для них - документация [Яндекс-карт](http://api.yandex.ru/maps/doc/intro/concepts/intro.xml)
 и [AngularJS](docs.angularjs.org/api/) вам в помощь
