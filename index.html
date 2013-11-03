@@ -1,158 +1,250 @@
 <html ng-app="YmapsDemo">
 <head>
-	<title>Yandex Maps API as an Angular JS direcitive</title>
+    <title>Yandex Maps API as an Angular JS direcitive</title>
     <meta charset='utf-8'>
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
-	<style type="text/css">
-		html, body {
-			width: 100%;
-			height: 100%;
-		}
-        yandex-map {
-            display: block;
-        }
-		.header {
-            text-align: center;
-            position: relative;
-            background: #FD9E70;
-            color: #FFF;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .header:after {
-            content: "";
-            width: 100%;
-            height: 15px;
-            position: absolute;
-            bottom: -15px;
-             left: 0;
-            background: linear-gradient(135deg, #FD9E70 25%, transparent 25%) center top repeat-x,
-                        linear-gradient(045deg, transparent 75%, #FD9E70 75%) center top repeat-x;
-            background-size: 15px 15px;
-        }
-        .header p {
-            font-size: 1.2em;
-        }
-        .demo_content {
-            min-height: 75%;
-        }
-        .controls .table tr>td{
-            vertical-align: middle;
-        }
-        .controls .table .close {
-            float: none;
-        }
-        .add_button {
-            margin-bottom: 10px;
-        }
-		.map_container {
-            height: 75%;
-        }
-        .description {
-            padding: 15px;
-            max-width: 940px;
-            margin: 0 auto;
-        }
-        .description h5 {
-            font-weight: bold;
-        }
-	</style>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-	<script src="angular-ymaps.js"></script>
-	<script src="app.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+    <link rel="stylesheet" href="rainbow-github.css">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="rainbow.min.js"></script>
+    <script src="angular-ymaps.js"></script>
+    <script src="app.js"></script>
 </head>
 <body ng-controller="MapCtrl">
-	<header class="header">
-        <h1>Удобная работа с Яндекс-картами</h1>
-        <p>Модуль для добавления карт через AngularJS</p>
-        <a href="#docs" class="btn btn-default">Документация</a>
-	</header>
-    <div class="demo_content clearfix">
-        <div class="controls col-sm-6">
-            <h3>Пример работы:</h3>
-            <p>Таблица связана с маркерами на карте, можно добавлять и удалять их, а также изменять координаты. Все изменения автоматически отразятся на карте.</p>
-            <table class="table"><thead>
-                <tr>
-                    <th>#</th><th>Широта</th><th>Долгота</th><th></th>
-                </tr>
-            </thead><tbody>
-                <tr ng-repeat="marker in markers">
-                    <td>{{$index+1}}</td>
-                    <td><input type="text" ng-model="marker.coordinates[0]" class="form-control" /></td>
-                    <td><input type="text" ng-model="marker.coordinates[1]" class="form-control" /></td>
-                    <td><button type="button" class="close" aria-hidden="true" ng-click="removeMarker(marker)">&times;</button></td>
-                </tr>
-                <tr ng-show="addingMarker">
-                    <td>*</td>
-                    <td><input type="text" ng-model="markerLat" placeholder="Lat" class="form-control" required /></td>
-                    <td><input type="text" ng-model="markerLon" placeholder="Lon" class="form-control" required /></td>
-                    <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
-                            title="Добавить">+</button></td>
-                </tr>
-            </tbody></table>
-            <button type="button" class="btn btn-default btn-block add_button" ng-hide="addingMarker"
-                    ng-click="addMarker()">Добавить маркер</button>
-        </div>
-        <yandex-map class="map_container col-sm-6" center="map.center" zoom="map.zoom">
-            <ymap-marker coordinates="marker.coordinates" index="$index+1" ng-repeat="marker in markers"></ymap-marker>
-        </yandex-map>
+<header class="header">
+    <h1>Удобная работа с Яндекс-картами</h1>
+    <p>Модуль для добавления карт через AngularJS</p>
+    <a href="#docs" class="btn btn-default">Документация</a>
+    <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
+</header>
+<div class="demo_content clearfix">
+    <div class="controls col-sm-6">
+        <h3>Пример работы:</h3>
+        <p>Таблица связана с маркерами на карте, можно добавлять и удалять их, а также изменять координаты. Все изменения автоматически отразятся на карте.</p>
+        <table class="table"><thead>
+        <tr>
+            <th>#</th><th>Широта</th><th>Долгота</th><th></th>
+        </tr>
+        </thead><tbody>
+        <tr ng-repeat="marker in markers">
+            <td>{{$index+1}}</td>
+            <td><input type="text" ng-model="marker.coordinates[0]" class="form-control" /></td>
+            <td><input type="text" ng-model="marker.coordinates[1]" class="form-control" /></td>
+            <td><button type="button" class="close" aria-hidden="true" ng-click="removeMarker(marker)">&times;</button></td>
+        </tr>
+        <tr ng-show="addingMarker">
+            <td>*</td>
+            <td><input type="text" ng-model="markerLat" placeholder="Lat" class="form-control" required /></td>
+            <td><input type="text" ng-model="markerLon" placeholder="Lon" class="form-control" required /></td>
+            <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
+                        title="Добавить">+</button></td>
+        </tr>
+        </tbody></table>
+        <button type="button" class="btn btn-default btn-block add_button" ng-hide="addingMarker"
+                ng-click="addMarker()">Добавить маркер</button>
     </div>
-    <div class="description" id="docs">
-        <h3>Подключение и использование</h3>
-        <p>Это модуль для <a href="http://angularjs.org">AngularJS</a>, предназначенный для простого подключения и
-            работы с Яндекс-картами. Чтобы начать использовать, подключите <a href="angular-ymaps.js">этот скрипт</a>
-            (или <a href="angular-ymaps.min.js">упакованную версию</a>) и добавьте в зависимости модуль
-            <code>ymaps</code>.</p>
-        <pre><code>angular.module('myModule', ['ymaps']);</code></pre>
-        <p>Теперь можно встраивать карту, просто написав нужный тег:</p>
-        <pre>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;</pre>
-        <h5>Параметры yandex-map:</h5>
-        <p>При создании карты, нужно указать ей два обязательных атрибута.</p>
-        <ul>
-            <li><b>center</b>(Array) - массив из двух чисел, широта и долгота центра карты</li>
-            <li><b>zoom</b>(Number) - число, от 0 до 23, масштаб карты. Во избежание ошибок нужно задавать
-                разрешенный масштаб для указанной области</li>
-        </ul>
-        <p>Добавление маркеров на карту сделано в стиле Angular &mdash; для этого нужно добавить тег
-            <code>ymap-marker</code> внутрь тега карты. Эта директива идеально работает в сочетании с
-            <code>ng-repeat</code>, поэтому можно легко вывести сразу массив из точек:</p>
-        <pre><code>&lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
-    &lt;ymap-marker coordinates=&quot;marker.coordinates&quot; index=&quot;$index+1&quot; ng-repeat="marker in markers"&gt;&lt;/ymap-marker&gt;
-&lt;/yandex-map&gt;</code></pre>
-        <h5>Параметры ymap-marker:</h5>
-        <ul>
-            <li><b>coordinates</b>(Array) - массив из двух чисел, широта и долгота маркера на карте</li>
-            <li><b>index</b>(String) - идентификатор маркера, который на нем пишется</li>
-            <li><b>properties</b>(Object) - свойства метки, передаются в
-                <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a></li>
-        </ul>
-        <p>Кроме этого, можно управлять некоторыми глобальными свойствами, вынесенными в константу
-            <code>ymapsConfig</code></p>
-        <ul>
-            <li><b>mapBehaviors</b>(Array) - возможные поведения карты, массив ключей, которые принимает
-                <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
-                Стандартное значение: <i>['default']</i>
-            <li><b>markerOptions</b>(Object) - опции, передаваемые <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">
-                ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров на карте. Стандартное значение:
-                <i>{preset: 'twirl#darkgreenIcon'}</i></li>
-            <li><b>fitMarkers</b>(Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было
-                видно все точки на карте. Стандартное значение: <i>true</i>
-            </li>
-        </ul>
-        <h3>Feedback</h3>
-        <p>Исходный код доступен на <a href="https://github.com/just-boris/angular-ymaps">GitHub</a>. Проект открыт к
-            изменениям, принимаются пожелания и сообщения о багах в виде
-            <a href="https://github.com/just-boris/angular-ymaps/issues">issues</a> к этому репозиторию</p>
-    </div>
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-39285873-1']);
-        _gaq.push(['_trackPageview']);
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+    <yandex-map class="map_container col-sm-6" center="map.center" zoom="map.zoom">
+        <ymap-marker coordinates="marker.coordinates" index="$index+1" ng-repeat="marker in markers"></ymap-marker>
+    </yandex-map>
+</div>
+<div class="description" id="docs">
+    <h1>Angular-ymaps</h1>
+
+<p>Yandex Maps API as an Angular JS direcitive.</p>
+
+<p>Это модуль для <a href="http://angularjs.org">Angular JS</a>, предназначенный для простого подключения и работы с Яндекс-картами. С его помощью можно
+вставлять Яндекс карту на страницу как html-тег, так же просто как и <code>img</code> или <code>button</code></p>
+
+<h3><a href="http://catatron.com/angular-ymaps/" class="hidden">Документация и пример использования</a></h3>
+
+<h3>Подключение</h3>
+
+<ul>
+<li>Скачать <a href="http://catatron.com/angular-ymaps/angular-ymaps.js">библиотеку</a> или ее <a href="http://catatron.com/angular-ymaps/angular-ymaps.min.js">упакованную версию</a></li>
+<li>Подключить скрипт на страницу <br> 
+<code>&lt;script src="angular-ymaps.js"&gt;&lt;/script&gt;</code></li>
+<li>Добавить модуль <code>ymaps</code> в зависимости своего angular-приложения <br>
+<code>angular.module('MyApp', [ymaps])</code></li>
+<li>Теперь можно использовать в HTML новые теги 
+<ul><li><code>&lt;yandex-map&gt;</code> - Яндекс-карта</li>
+<li><code>&lt;ymap-marker&gt;</code> - маркер на карте, вставляется только внутрь тега <code>&lt;yandex-map&gt;</code></li></ul></li>
+</ul>
+
+<h4>Тег yandex-map:</h4>
+
+<pre ng-non-bindable><code data-language="HTML"><yandex-map center="map.center" zoom="map.zoom"></yandex-map></code></pre>
+
+<p>Добавляет Яндекс-карту на страницу. Размеры карты определяются размерами элемента, их можно задать в css. При
+создании нужно указать два обязательных атрибута:</p>
+
+<ul>
+<li><strong>center</strong>(Array) - массив из двух чисел, широта и долгота центра карты</li>
+<li><strong>zoom</strong>(Number) - число, от 0 до 23, масштаб карты. Во избежание ошибок нужно задавать разрешенный масштаб для
+указанной области</li>
+</ul>
+
+<h4>Тег ymap-marker:</h4>
+
+<p>Может использоваться только внутри тега карты, добавляет на нее точку. Имеются следующие атрибуты</p>
+
+<ul>
+<li><strong>coordinates</strong>(Array) - массив из двух чисел, широта и долгота маркера на карте (обязательный)</li>
+<li><strong>index</strong>(String) - текст, который пишется на маркере</li>
+<li><strong>properties</strong>(Object) - свойства метки, передаются в <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a>. Здесь может быть текст балуна, который
+открывается при нажатии на метку, или всплывающей при наведении подсказки. Подробнее - в
+<a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">документации Яндекс</a>, описание параметра properties.</li>
+</ul>
+
+<h4>Глобальные настройки</h4>
+
+<p>Можно управлять видом и функциоальностью карты через свойства, вынесенные в константу <code>ymapsConfig</code>:</p>
+
+<ul>
+<li><strong>mapBehaviors</strong>(Array) - возможные поведения карты, массив ключей, которые принимает <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
+Стандартное значение: <em>['default']</em></li>
+<li><strong>markerOptions</strong>(Object) - опции, передаваемые <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров
+на карте. Стандартное значение: <em>{preset: 'twirl#darkgreenIcon'}</em></li>
+<li><strong>fitMarkers</strong>(Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было видно все точки на
+карте. Стандартное значение: <em>true</em></li>
+</ul>
+
+<h3>Примеры использования</h3>
+
+<h4>Карта заданного масштаба с одним маркером в центре</h4>
+
+<p>Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера</p>
+
+<pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.22, 35.33]">
+    <yandex-map center="coords" zoom="'10'">
+        <ymap-marker coordinates="coords"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
+
+<h4>Маркер другого цвета</h4>
+
+<p>Это немножко сложнее, нужно переопределить свойство <code>markerOptions</code> в настройках модуля. HTML такой же, как и в прошлом
+примере</p>
+
+<p><strong>JS-код</strong></p>
+
+<pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
+angular.module('MyApp', [ymaps]).config(function(ymapsConfig) {
+    //выставляем синий цвет иконкам вместо зеленого
+    ymapsConfig.markerOptions.preset = 'twirl#darkblueDotIcon';
+});
+</code></pre>
+
+<p><strong>HTML</strong></p>
+
+<pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.22, 35.33]">
+    <yandex-map center="coords" zoom="'10'">
+        <!-- а маркер теперь синий! -->
+        <ymap-marker coordinates="coords"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
+
+<h4>Маркеры на карте из массива</h4>
+
+<p>С помощью Angular JS эта задача решается крайне легко! Пример в действии можно увидеть прямо на этой странице</p>
+
+<p><strong>JS-код</strong></p>
+
+<pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
+angular.module('MyApp', [ymaps]).controller('MapCtrl', function($scope) {
+    //создаем массив координат. При желании его можно загружать и с сервера,
+    //подробнее об этом - в документации Angular
+    $scope.markers = [
+        [54.46, 38.31],
+        [53.57, 37.13],
+        [53.14, 37.59],
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [53.57, 37.13], zoom: 12
+    }
+});
+</code></pre>
+
+<p><strong>HTML</strong></p>
+
+<pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- директива ng-repeat создаст все маркеры одним кодом  -->
+        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
+
+<h4>Метки с текстом на карте</h4>
+
+<p>Этот пример, почти такой же, как и предыдущий, только нужно загрузить больше данных</p>
+
+<p><strong>JS-код</strong></p>
+
+<pre><code data-language="javascript">angular.module('MyApp', [ymaps])).config(function(ymapsConfig) {
+    //нужно сменить preset у карты на специальный текстовый
+    ymapsConfig.markerOptions.preset = 'twirl#darkgreenStretchyIcon';
+});
+.controller('MapCtrl', function($scope) {
+    //создаем массив с данными для меток
+    $scope.markers = [
+        {coordinates:[54.46, 38.31], title: 'Пункт А'}
+        {coordinates:[53.57, 37.13], title: 'Пункт Б'}
+        {coordinates:[53.14, 37.59], title: 'Запасной пункт Б'}
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [53.57, 37.13], zoom: 12
+    }
+});
+</code></pre>
+
+<p><strong>HTML</strong></p>
+
+<pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- загружаем текст для метки в атрибут index -->
+        <ymap-marker ng-repeat="marker in markers" index="marker.text" coordinates="marker.coordinates"></ymap-marker>
+    </yandex-map>
+</div>
+</code></pre>
+
+<p>Но это еще не все, есть и другие варианты примения, для них - документация <a href="http://api.yandex.ru/maps/doc/intro/concepts/intro.xml">Яндекс-карт</a>
+и <a href="docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
+
+<h3>Feedback</h3>
+
+<p>Исходный код доступен на <a href="https://github.com/just-boris/angular-ymaps/">GitHub</a>. Проект открыт к изменениям,
+принимаются пожелания и сообщения о багах в виде <a href="https://github.com/just-boris/angular-ymaps/issues">issues</a> к этому
+репозиторию</p>
+
+<h3>Contributing</h3>
+
+<p>Проект собирается с помощью Grunt, для тестов используется Karma. Для сборки нужно сделать следующее</p>
+
+<ul>
+<li>Установить node.js</li>
+<li>Установить Grunt <code>npm install -g grunt-cli</code></li>
+<li>Установить Karma <code>npm install -g karma</code></li>
+<li>Склонировать этот проект <code>git@github.com:just-boris/angular-ymaps.git</code></li>
+<li>В папке проекта выполнить <code>npm init</code>, установить локальные зависимости</li>
+<li>Сборка проекта выполняется командой <code>grunt</code>. В папке build будут собранные файлы</li>
+<li>Для тестирования во время разработки можно запустить karma в режиме сервера: <code>karma start --no-single-run</code></li>
+</ul>
+
+<p>Буду рад принять пожелания и дополнения. Удачного кодинга!</p>
+</div>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39285873-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
 </body>
 </html>

@@ -1,0 +1,63 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+yandex-map {
+    display: block;
+}
+.hidden {
+    display: none;
+}
+/* bootstrap, shut up */
+.rainbow .close {
+    float: none;
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: none;
+    opacity: 1;
+}
+.header {
+    text-align: center;
+    position: relative;
+    background: #FD9E70;
+    color: #FFF;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.header:after {
+    content: "";
+    width: 100%;
+    height: 15px;
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    background: linear-gradient(135deg, #FD9E70 25%, transparent 25%) center top repeat-x,
+    linear-gradient(045deg, transparent 75%, #FD9E70 75%) center top repeat-x;
+    background-size: 15px 15px;
+}
+.header p {
+    font-size: 1.2em;
+}
+.demo_content {
+    min-height: 75%;
+}
+.controls .table tr>td{
+    vertical-align: middle;
+}
+.controls .table .close {
+    float: none;
+}
+.add_button {
+    margin-bottom: 10px;
+}
+.map_container {
+    height: 75%;
+}
+.description {
+    padding: 15px;
+    max-width: 940px;
+    margin: 0 auto;
+}
+.description h5 {
+    font-weight: bold;
+}
