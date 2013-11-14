@@ -3,12 +3,11 @@ module.exports = function (grunt) {
     function getExamplesForPages(examples) {
         var result = {};
         examples.forEach(function(example) {
-            result['build/examples/'+example+'/index.html'] = 'docs/examples/'+example+'/index.tpl.html';
+            result['build/examples/'+example+'/index.html'] = [baseDir+example+'/index.tpl.html', baseDir+example+'/data.json'];
         });
         return result;
     }
     function getExamplesForIndex(examples) {
-        var baseDir = 'docs/examples/';
         return examples.map(function(example) {
             return {
                 name: example,
@@ -18,7 +17,8 @@ module.exports = function (grunt) {
             };
         });
     }
-    var examples = [
+    var baseDir = 'docs/examples/',
+        examples = [
         'simple-marker',
         'color-marker',
         'markers-array',

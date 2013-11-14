@@ -21,8 +21,8 @@ module.exports = function(grunt) {
         var options = this.options(),
             template = grunt.file.read(options.layout);
         this.files.forEach(function(filePair) {
-            var pages = filePair.src.map(grunt.file.read).join("\n"),
-                result = grunt.template.process(template, {data:{content: pages}});
+            var files = filePair.src.map(readFile),
+                result = grunt.template.process(template, {data:{content: files}});
             grunt.file.write(filePair.dest, result);
         });
     });
