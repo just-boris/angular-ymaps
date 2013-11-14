@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Карта заданного масштаба с одним маркером в центре</title>
+    <meta charset='utf-8'>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        header {
+            height: 10%;
+            text-align: center;
+        }
+        header h1 {
+            position: absolute;
+            width: 100%;
+        }
+        div[ng-controller], div[ng-init] {
+            position: relative;
+            height: 90%;
+        }
+        yandex-map {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="../../angular-ymaps.js"></script>
+    <script src="script.js"></script>
+</head>
+<body ng-app="MyApp">
+    <header>
+        <h1>Карта заданного масштаба с одним маркером в центре</h1>
+    </header>
+    <div ng-init="coords=[55.21, 34.30]">
+    <yandex-map center="coords" zoom="'10'">
+        <ymap-marker coordinates="coords"></ymap-marker>
+    </yandex-map>
+</div>
+</body>
+</html>

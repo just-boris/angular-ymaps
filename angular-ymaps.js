@@ -1,4 +1,4 @@
-/*! angular-ymaps 2013-11-03 */
+/*! angular-ymaps 2013-11-15 */
 /*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
@@ -45,9 +45,9 @@ angular.module('ymaps', [])
         return deferred.promise;
     };
 }])
-.factory('ymapsLoader', ['$script', function($script) {
+.factory('ymapsLoader', ['$script', 'ymapsConfig', function($script, ymapsConfig) {
     "use strict";
-    var scriptPromise = $script('//api-maps.yandex.ru/2.0.30/?load=package.standard,package.clusters&mode=release&lang=ru-RU&ns=ymaps').then(function() {
+    var scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
         return ymaps;
     });
     return {
@@ -61,6 +61,7 @@ angular.module('ymaps', [])
     };
 }])
 .constant('ymapsConfig', {
+    apiUrl: '//api-maps.yandex.ru/2.0-stable/?load=package.standard,package.clusters&mode=release&lang=ru-RU&ns=ymaps',
     mapBehaviors: ['default'],
     markerOptions: {
         preset: 'twirl#darkgreenIcon'
