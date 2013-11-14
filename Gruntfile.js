@@ -1,5 +1,30 @@
 module.exports = function (grunt) {
     "use strict";
+    function getExamplesForPages(examples) {
+        var result = {};
+        examples.forEach(function(example) {
+            result['build/examples/'+example+'/index.html'] = 'docs/examples/'+example+'/index.tpl.html';
+        });
+        return result;
+    }
+    function getExamplesForIndex(examples) {
+        var baseDir = 'docs/examples/';
+        return examples.map(function(example) {
+            return {
+                name: example,
+                data: baseDir+example+'/data.json',
+                html: baseDir+example+'/index.tpl.html',
+                js: baseDir+example+'/script.js'
+            };
+        });
+    }
+    var examples = [
+        'simple-marker',
+        'color-marker',
+        'markers-array',
+        'markers-text'
+    ];
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -30,20 +55,30 @@ module.exports = function (grunt) {
                 dest: 'build/<%= pkg.name %>.min.js'
             }
         },
-        site: {
+        examples: {
             options: {
-                layout: 'docs/index.html'
+                layout: 'docs/example.tpl.html'
             },
-            index: {
-                src: ['README.md'],
+            examples: {
+                files: getExamplesForPages(examples)
+            }
+        },
+        index: {
+            options: {
+                layout: 'docs/index.tpl.html',
                 dest: 'build/index.html'
+            },
+            files: {
+                readme: 'README.md',
+                examples: getExamplesForIndex(examples),
+                contrib: 'CONTRIBUTING.md'
             }
         },
         copy: {
             main: {
                 expand: true,
                 cwd: 'docs/',
-                src: ['**', '!index.html'],
+                src: ['**', '!**/*.tpl.html'],
                 dest: 'build/'
             }
         }
@@ -66,7 +101,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('build', ['jshint', 'test', 'concat', 'uglify']);
-    grunt.registerTask('demo', ['site', 'copy']);
+    grunt.registerTask('demo', ['index', 'examples', 'copy']);
     grunt.registerTask('default', ['build', 'demo']);
     return grunt;
 };

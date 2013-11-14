@@ -14,8 +14,11 @@
 <header class="header">
     <h1>Удобная работа с Яндекс-картами</h1>
     <p>Модуль для добавления карт через AngularJS</p>
-    <a href="#docs" class="btn btn-default">Документация</a>
-    <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
+    <div class="btn-group">
+        <a href="#docs" class="btn btn-default">Документация</a>
+        <a href="#examples" class="btn btn-default">Примеры</a>
+        <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
+    </div>
 </header>
 <div class="demo_content clearfix">
     <div class="controls col-sm-6">
@@ -48,7 +51,23 @@
     </yandex-map>
 </div>
 <div class="description" id="docs">
-    <%= content %>
+    <%= readme %>
+    <h3 id="examples">Примеры использования</h3>
+    <% examples.forEach(function(example) { %>
+        <div class="page-header">
+            <a href="examples/<%= example.name %>/" class="btn pull-right">Смотреть демо</a>
+            <h4><%= example.data.title %></h4>
+        </div>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML"><%= example.html %></code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript"><%= example.js %></code></pre>
+    <% }); %>
+
+    <p>Но это еще не все, есть и другие варианты примения, для них - документация [Яндекс-карт](http://api.yandex.ru/maps/doc/intro/concepts/intro.xml)
+    и [AngularJS](docs.angularjs.org/api/) вам в помощь</p>
+
+    <%= contrib %>
 </div>
 <script type="text/javascript">
     var _gaq = _gaq || [];

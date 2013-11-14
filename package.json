@@ -20,6 +20,7 @@
     "karma": "~0.10.4",
     "grunt-karma": "~0.6.2",
     "node-markdown": "~0.1.1",
-    "grunt-contrib-copy": "~0.4.1"
+    "grunt-contrib-copy": "~0.4.1",
+    "underscore": "~1.5.2"
   }
 }

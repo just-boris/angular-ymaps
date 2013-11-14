@@ -1,0 +1,6 @@
+<div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- загружаем текст для метки в атрибут index -->
+        <ymap-marker ng-repeat="marker in markers" index="marker.title" coordinates="marker.coordinates"></ymap-marker>
+    </yandex-map>
+</div>
