@@ -22,7 +22,8 @@ module.exports = function (grunt) {
         'simple-marker',
         'color-marker',
         'markers-array',
-        'markers-text'
+        'markers-text',
+        'balloons'
     ];
 
     // Project configuration.
@@ -81,6 +82,21 @@ module.exports = function (grunt) {
                 src: ['**', '!**/*.tpl.html'],
                 dest: 'build/'
             }
+        },
+        buildcontrol: {
+            options: {
+                dir: 'build',
+                connectCommits: false,
+                commit: true,
+                push: true,
+                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+            },
+            pages: {
+                options: {
+                    remote: 'git@github.com:just-boris/angular-ymaps.git',
+                    branch: 'gh-pages'
+                }
+            }
         }
     });
 
@@ -89,6 +105,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-build-control');
     grunt.loadTasks('tasks/');
 
     grunt.registerTask('test', 'Run tests on singleRun karma server', function() {
@@ -103,5 +120,6 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['jshint', 'test', 'concat', 'uglify']);
     grunt.registerTask('demo', ['index', 'examples', 'copy']);
     grunt.registerTask('default', ['build', 'demo']);
+    grunt.registerTask('build-gh', ['default', 'buildcontrol:pages']);
     return grunt;
 };

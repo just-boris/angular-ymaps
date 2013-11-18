@@ -15,6 +15,7 @@
     <h1>Удобная работа с Яндекс-картами</h1>
     <p>Модуль для добавления карт через AngularJS</p>
     <div class="btn-group">
+        <a href="#docs" class="btn btn-success">Код на Github</a>
         <a href="#docs" class="btn btn-default">Документация</a>
         <a href="#examples" class="btn btn-default">Примеры</a>
         <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
@@ -58,6 +59,7 @@
             <a href="examples/<%= example.name %>/" class="btn pull-right">Смотреть демо</a>
             <h4><%= example.data.title %></h4>
         </div>
+        <p><%= example.data.description %></p>
         <h5>HTML</h5>
         <pre ng-non-bindable><code data-language="HTML"><%= example.html %></code></pre>
         <h5>Javascript</h5>
@@ -65,7 +67,7 @@
     <% }); %>
 
     <p>Но это еще не все, есть и другие варианты примения, для них &mdash; документация <a href="http://api.yandex.ru/maps/doc/intro/concepts/intro.xml">Яндекс-карт</a>
-    и <a href="docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
+    и <a href="http://docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
 
     <%= contrib %>
 </div>

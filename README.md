@@ -45,6 +45,8 @@ Yandex Maps API as an Angular JS direcitive.
 
 Можно управлять видом и функциоальностью карты через свойства, вынесенные в константу `ymapsConfig`:
 
+* **apiUrl**(String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
+    По умолчанию загружается `2.0-stable`
 * **mapBehaviors**(Array) - возможные поведения карты, массив ключей, которые принимает [ymaps.map.behavior.Manager](http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml).
     Стандартное значение: *['default']*
 * **markerOptions**(Object) - опции, передаваемые [ymaps.GeoObject], то есть настройки внешнего вида и поведения маркеров
