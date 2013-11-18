@@ -1,4 +1,4 @@
-/*! angular-ymaps 2013-11-15 */
+/*! angular-ymaps 2013-11-19 */
 /*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
