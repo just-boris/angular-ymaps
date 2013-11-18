@@ -19,7 +19,7 @@ yandex-map {
 .header {
     text-align: center;
     position: relative;
-    background: #FD9E70;
+    background: #F78D59;
     color: #FFF;
     padding: 20px;
     margin-bottom: 20px;
@@ -31,8 +31,8 @@ yandex-map {
     position: absolute;
     bottom: -15px;
     left: 0;
-    background: linear-gradient(135deg, #FD9E70 25%, transparent 25%) center top repeat-x,
-    linear-gradient(045deg, transparent 75%, #FD9E70 75%) center top repeat-x;
+    background: linear-gradient(135deg, #F78D59 25%, transparent 25%) center top repeat-x,
+    linear-gradient(045deg, transparent 75%, #F78D59 75%) center top repeat-x;
     background-size: 15px 15px;
 }
 .header p {

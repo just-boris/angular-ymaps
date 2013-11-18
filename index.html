@@ -15,6 +15,7 @@
     <h1>Удобная работа с Яндекс-картами</h1>
     <p>Модуль для добавления карт через AngularJS</p>
     <div class="btn-group">
+        <a href="#docs" class="btn btn-success">Код на Github</a>
         <a href="#docs" class="btn btn-default">Документация</a>
         <a href="#examples" class="btn btn-default">Примеры</a>
         <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
@@ -103,6 +104,8 @@
 <p>Можно управлять видом и функциоальностью карты через свойства, вынесенные в константу <code>ymapsConfig</code>:</p>
 
 <ul>
+<li><strong>apiUrl</strong>(String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
+По умолчанию загружается <code>2.0-stable</code></li>
 <li><strong>mapBehaviors</strong>(Array) - возможные поведения карты, массив ключей, которые принимает <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
 Стандартное значение: <em>['default']</em></li>
 <li><strong>markerOptions</strong>(Object) - опции, передаваемые <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров
@@ -116,6 +119,7 @@
             <a href="examples/simple-marker/" class="btn pull-right">Смотреть демо</a>
             <h4>Карта заданного масштаба с одним маркером в центре</h4>
         </div>
+        <p>Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера</p>
         <h5>HTML</h5>
         <pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.21, 34.30]">
     <yandex-map center="coords" zoom="'10'">
@@ -130,6 +134,7 @@ angular.module('MyApp', ['ymaps']);</code></pre>
             <a href="examples/color-marker/" class="btn pull-right">Смотреть демо</a>
             <h4>Маркер нестандартного цвета</h4>
         </div>
+        <p>Это немножко сложнее, нужно переопределить свойство <code>markerOptions</code> в настройках модуля. HTML такой же, как и в прошлом примере</p>
         <h5>HTML</h5>
         <pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[56.27, 34.33]">
     <yandex-map center="coords" zoom="'10'">
@@ -148,6 +153,7 @@ angular.module('MyApp', ['ymaps']).config(function(ymapsConfig) {
             <a href="examples/markers-array/" class="btn pull-right">Смотреть демо</a>
             <h4>Маркеры на карте из массива</h4>
         </div>
+        <p>С помощью Angular JS эта задача решается крайне легко! Пример в действии можно увидеть прямо на этой странице</p>
         <h5>HTML</h5>
         <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
     <yandex-map center="map.center" zoom="map.zoom">
@@ -175,6 +181,7 @@ angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
             <a href="examples/markers-text/" class="btn pull-right">Смотреть демо</a>
             <h4>Метки с текстом на карте</h4>
         </div>
+        <p>Этот пример, почти такой же, как и предыдущий, только нужно загрузить больше данных</p>
         <h5>HTML</h5>
         <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
     <yandex-map center="map.center" zoom="map.zoom">
@@ -200,9 +207,36 @@ angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
     };
 });</code></pre>
     
+        <div class="page-header">
+            <a href="examples/balloons/" class="btn pull-right">Смотреть демо</a>
+            <h4>Маркеры с балунами</h4>
+        </div>
+        <p>Крайне востребованный случай, при клике на маркер показывается сообщение. Сделать это очень просто - нужно всего лишь прописать нужный текст в свойство balloonContent</p>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- загружаем текст сообщения в атрибут properties -->
+        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker.coordinates" properties="marker.properties"></ymap-marker>
+    </yandex-map>
+</div></code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
+angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
+    //создаем массив координат и данных для меток и балунов
+    $scope.markers = [
+        {coordinates:[56.56, 38.63], properties: {balloonContent: 'Здесь рыбы нет!'}},
+        {coordinates:[55.16, 39.89], properties: {balloonContent: 'Здесь рыбы тоже нет'}},
+        {coordinates:[55.08, 38.96], properties: {balloonContent: 'А здесь есть!'}}
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [55.55, 39.84], zoom: 12
+    };
+});</code></pre>
+    
 
     <p>Но это еще не все, есть и другие варианты примения, для них &mdash; документация <a href="http://api.yandex.ru/maps/doc/intro/concepts/intro.xml">Яндекс-карт</a>
-    и <a href="docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
+    и <a href="http://docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
 
     <h3>Feedback</h3>
 

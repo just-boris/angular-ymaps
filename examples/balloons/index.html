@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Маркеры с балунами</title>
+    <meta charset='utf-8'>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        header {
+            height: 10%;
+            text-align: center;
+        }
+        header h1 {
+            position: absolute;
+            width: 100%;
+        }
+        div[ng-controller], div[ng-init] {
+            position: relative;
+            height: 90%;
+        }
+        yandex-map {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="../../angular-ymaps.js"></script>
+    <script src="script.js"></script>
+</head>
+<body ng-app="MyApp">
+    <header>
+        <h1>Маркеры с балунами</h1>
+    </header>
+    <div ng-controller="MapCtrl">
+    <yandex-map center="map.center" zoom="map.zoom">
+        <!-- загружаем текст сообщения в атрибут properties -->
+        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker.coordinates" properties="marker.properties"></ymap-marker>
+    </yandex-map>
+</div>
+</body>
+</html>
