@@ -3,19 +3,20 @@
     <title>Yandex Maps API as an Angular JS direcitive</title>
     <meta charset='utf-8'>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
-    <link rel="stylesheet" href="rainbow-github.css">
+    <link rel="stylesheet" href="github.css">
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script type="text/javascript" src="rainbow.min.js"></script>
     <script src="angular-ymaps.js"></script>
     <script src="app.js"></script>
+    <script type="text/javascript" src="highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body ng-controller="MapCtrl">
 <header class="header">
     <h1>Удобная работа с Яндекс-картами</h1>
     <p>Модуль для добавления карт через AngularJS</p>
     <div class="btn-group">
-        <a href="#docs" class="btn btn-success">Код на Github</a>
+        <a href="https://github.com/just-boris/angular-ymaps/" class="btn btn-success">Код на Github</a>
         <a href="#docs" class="btn btn-default">Документация</a>
         <a href="#examples" class="btn btn-default">Примеры</a>
         <a href="angular-ymaps.js" class="btn btn-danger">Скачать</a>
@@ -76,7 +77,8 @@
 
 <h4>Тег yandex-map:</h4>
 
-<pre ng-non-bindable><code data-language="HTML"><yandex-map center="map.center" zoom="map.zoom"></yandex-map></code></pre>
+<pre><code>&lt;yandex-map center="map.center" zoom="map.zoom"&gt;&lt;/yandex-map&gt;
+</code></pre>
 
 <p>Добавляет Яндекс-карту на страницу. Размеры карты определяются размерами элемента, их можно задать в css. При
 создании нужно указать два обязательных атрибута:</p>
@@ -121,14 +123,14 @@
         </div>
         <p>Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[55.21, 34.30]">
-    <yandex-map center="coords" zoom="'10'">
-        <ymap-marker coordinates="coords"></ymap-marker>
-    </yandex-map>
-</div></code></pre>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[55.21, 34.30]&quot;&gt;
+    &lt;yandex-map center=&quot;coords&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
-angular.module('MyApp', ['ymaps']);</code></pre>
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
     
         <div class="page-header">
             <a href="examples/color-marker/" class="btn pull-right">Смотреть демо</a>
@@ -136,17 +138,17 @@ angular.module('MyApp', ['ymaps']);</code></pre>
         </div>
         <p>Это немножко сложнее, нужно переопределить свойство <code>markerOptions</code> в настройках модуля. HTML такой же, как и в прошлом примере</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML"><div ng-init="coords=[56.27, 34.33]">
-    <yandex-map center="coords" zoom="'10'">
-        <!-- а маркер теперь синий! -->
-        <ymap-marker coordinates="coords"></ymap-marker>
-    </yandex-map>
-</div></code></pre>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[56.27, 34.33]&quot;&gt;
+    &lt;yandex-map center=&quot;coords&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        &lt;!-- а маркер теперь синий! --&gt;
+        &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
-angular.module('MyApp', ['ymaps']).config(function(ymapsConfig) {
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).config(function(ymapsConfig) {
     //выставляем синий цвет иконкам вместо зеленого
-    ymapsConfig.markerOptions.preset = 'twirl#darkblueDotIcon';
+    ymapsConfig.markerOptions.preset = &#x27;twirl#darkblueDotIcon&#x27;;
 });</code></pre>
     
         <div class="page-header">
@@ -155,15 +157,15 @@ angular.module('MyApp', ['ymaps']).config(function(ymapsConfig) {
         </div>
         <p>С помощью Angular JS эта задача решается крайне легко! Пример в действии можно увидеть прямо на этой странице</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
-    <yandex-map center="map.center" zoom="map.zoom">
-        <!-- директива ng-repeat создаст все маркеры одним кодом  -->
-        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker"></ymap-marker>
-    </yandex-map>
-</div></code></pre>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
+    &lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+        &lt;!-- директива ng-repeat создаст все маркеры одним кодом  --&gt;
+        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;$index+1&quot; coordinates=&quot;marker&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
-angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&#x27;, function($scope) {
     //создаем массив координат. При желании его можно загружать и с сервера,
     //подробнее об этом - в документации Angular
     $scope.markers = [
@@ -183,23 +185,23 @@ angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
         </div>
         <p>Этот пример, почти такой же, как и предыдущий, только нужно загрузить больше данных</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
-    <yandex-map center="map.center" zoom="map.zoom">
-        <!-- загружаем текст для метки в атрибут index -->
-        <ymap-marker ng-repeat="marker in markers" index="marker.title" coordinates="marker.coordinates"></ymap-marker>
-    </yandex-map>
-</div></code></pre>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
+    &lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+        &lt;!-- загружаем текст для метки в атрибут index --&gt;
+        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;marker.title&quot; coordinates=&quot;marker.coordinates&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
-        <pre ng-non-bindable><code data-language="javascript">angular.module('MyApp', ['ymaps']).config(function(ymapsConfig) {
+        <pre ng-non-bindable><code data-language="javascript">angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).config(function(ymapsConfig) {
     //нужно сменить preset у карты на специальный текстовый
-    ymapsConfig.markerOptions.preset = 'twirl#darkgreenStretchyIcon';
+    ymapsConfig.markerOptions.preset = &#x27;twirl#darkgreenStretchyIcon&#x27;;
 })
-.controller('MapCtrl', function($scope) {
+.controller(&#x27;MapCtrl&#x27;, function($scope) {
     //создаем массив с данными для меток
     $scope.markers = [
-        {coordinates:[54.46, 38.31], title: 'Пункт А'},
-        {coordinates:[53.57, 37.13], title: 'Пункт Б'},
-        {coordinates:[53.14, 37.59], title: 'Запасной пункт Б'}
+        {coordinates:[54.46, 38.31], title: &#x27;Пункт А&#x27;},
+        {coordinates:[53.57, 37.13], title: &#x27;Пункт Б&#x27;},
+        {coordinates:[53.14, 37.59], title: &#x27;Запасной пункт Б&#x27;}
     ];
     //настройки положения карты
     $scope.map = {
@@ -213,20 +215,20 @@ angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
         </div>
         <p>Крайне востребованный случай, при клике на маркер показывается сообщение. Сделать это очень просто - нужно всего лишь прописать нужный текст в свойство balloonContent</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML"><div ng-controller="MapCtrl">
-    <yandex-map center="map.center" zoom="map.zoom">
-        <!-- загружаем текст сообщения в атрибут properties -->
-        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker.coordinates" properties="marker.properties"></ymap-marker>
-    </yandex-map>
-</div></code></pre>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
+    &lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+        &lt;!-- загружаем текст сообщения в атрибут properties --&gt;
+        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;$index+1&quot; coordinates=&quot;marker.coordinates&quot; properties=&quot;marker.properties&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
-angular.module('MyApp', ['ymaps']).controller('MapCtrl', function($scope) {
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&#x27;, function($scope) {
     //создаем массив координат и данных для меток и балунов
     $scope.markers = [
-        {coordinates:[56.56, 38.63], properties: {balloonContent: 'Здесь рыбы нет!'}},
-        {coordinates:[55.16, 39.89], properties: {balloonContent: 'Здесь рыбы тоже нет'}},
-        {coordinates:[55.08, 38.96], properties: {balloonContent: 'А здесь есть!'}}
+        {coordinates:[56.56, 38.63], properties: {balloonContent: &#x27;Здесь рыбы нет!&#x27;}},
+        {coordinates:[55.16, 39.89], properties: {balloonContent: &#x27;Здесь рыбы тоже нет&#x27;}},
+        {coordinates:[55.08, 38.96], properties: {balloonContent: &#x27;А здесь есть!&#x27;}}
     ];
     //настройки положения карты
     $scope.map = {
