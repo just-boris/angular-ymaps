@@ -22,7 +22,8 @@ Yandex Maps API as an Angular JS direcitive.
   - `<ymap-marker>` - маркер на карте, вставляется только внутрь тега `<yandex-map>`
 
 ####Тег yandex-map:
-<pre ng-non-bindable><code data-language="HTML"><yandex-map center="map.center" zoom="map.zoom"></yandex-map></code></pre>
+
+    <yandex-map center="map.center" zoom="map.zoom"></yandex-map>
 
 Добавляет Яндекс-карту на страницу. Размеры карты определяются размерами элемента, их можно задать в css. При
 создании нужно указать два обязательных атрибута:

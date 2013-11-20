@@ -8,13 +8,9 @@ yandex-map {
 .hidden {
     display: none;
 }
-/* bootstrap, shut up */
-.rainbow .close {
-    float: none;
-    font-size: 13px;
-    font-weight: normal;
-    text-shadow: none;
-    opacity: 1;
+code {
+    color: #333;
+    background: #f8f8f8;
 }
 .header {
     text-align: center;
