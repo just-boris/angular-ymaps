@@ -141,6 +141,9 @@ angular.module('ymaps', [])
                     $scope.$apply(function() {
                         $compile(childNodes)($scope.$parent);
                     });
+                    $scope.$watch('center', function(newVal, oldVal) {
+                        $scope.map.panTo(newVal);
+                    });
                 });
             };
         },
