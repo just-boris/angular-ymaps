@@ -23,7 +23,8 @@ module.exports = function (grunt) {
         'color-marker',
         'markers-array',
         'markers-text',
-        'balloons'
+        'balloons',
+        'update-center'
     ];
 
     // Project configuration.
@@ -119,6 +120,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', ['jshint', 'test', 'concat', 'uglify']);
     grunt.registerTask('demo', ['index', 'examples', 'copy']);
+    grunt.registerTask('demo-notests', ['jshint', 'concat', 'uglify', 'demo']);
     grunt.registerTask('default', ['build', 'demo']);
     grunt.registerTask('build-gh', ['default', 'buildcontrol:pages']);
     return grunt;
