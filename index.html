@@ -123,8 +123,8 @@
         </div>
         <p>Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[55.21, 34.30]&quot;&gt;
-    &lt;yandex-map center=&quot;coords&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[55.21, 34.30];center=[55.21, 34.30]&quot;&gt;
+    &lt;yandex-map center=&quot;center&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
         &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
     &lt;/yandex-map&gt;
 &lt;/div&gt;</code></pre>
@@ -138,8 +138,8 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
         </div>
         <p>Это немножко сложнее, нужно переопределить свойство <code>markerOptions</code> в настройках модуля. HTML такой же, как и в прошлом примере</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[56.27, 34.33]&quot;&gt;
-    &lt;yandex-map center=&quot;coords&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[56.27, 34.33];center=[56.27, 34.33]&quot;&gt;
+    &lt;yandex-map center=&quot;center&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
         &lt;!-- а маркер теперь синий! --&gt;
         &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
     &lt;/yandex-map&gt;
@@ -235,6 +235,24 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
         center: [55.55, 39.84], zoom: 12
     };
 });</code></pre>
+    
+        <div class="page-header">
+            <a href="examples/update-center/" class="btn pull-right">Смотреть демо</a>
+            <h4>Обновление центра</h4>
+        </div>
+        <p>Можно изменять атрибут 'center' и он будет меняться</p>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;center=[55.21, 34.30];zoom=&#x27;10&#x27;&quot;&gt;
+    &lt;yandex-map center=&quot;center&quot; zoom=&quot;zoom&quot;&gt;&lt;/yandex-map&gt;
+    &lt;div class=&quot;window&quot;&gt;
+        &lt;label&gt;Широта: &lt;input type=&quot;text&quot; ng-model=&quot;center[0]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
+        &lt;label&gt;Долгота: &lt;input type=&quot;text&quot; ng-model=&quot;center[1]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
+        &lt;label&gt;Zoom: &lt;input type=&quot;text&quot; ng-model=&quot;zoom&quot; /&gt;&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
     
 
     <p>Но это еще не все, есть и другие варианты примения, для них &mdash; документация <a href="http://api.yandex.ru/maps/doc/intro/concepts/intro.xml">Яндекс-карт</a>

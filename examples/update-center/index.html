@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Маркеры с балунами</title>
+    <title>Обновление центра</title>
     <meta charset='utf-8'>
     <style type="text/css">
         html, body {
@@ -41,13 +41,15 @@
 </head>
 <body ng-app="MyApp">
     <header>
-        <h1>Маркеры с балунами</h1>
+        <h1>Обновление центра</h1>
     </header>
-    <div ng-controller="MapCtrl">
-    <yandex-map center="map.center" zoom="map.zoom">
-        <!-- загружаем текст сообщения в атрибут properties -->
-        <ymap-marker ng-repeat="marker in markers" index="$index+1" coordinates="marker.coordinates" properties="marker.properties"></ymap-marker>
-    </yandex-map>
+    <div ng-init="center=[55.21, 34.30];zoom='10'">
+    <yandex-map center="center" zoom="zoom"></yandex-map>
+    <div class="window">
+        <label>Широта: <input type="text" ng-model="center[0]" /></label><br>
+        <label>Долгота: <input type="text" ng-model="center[1]" /></label><br>
+        <label>Zoom: <input type="text" ng-model="zoom" /></label>
+    </div>
 </div>
 </body>
 </html>
