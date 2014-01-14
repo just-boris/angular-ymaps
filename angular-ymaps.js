@@ -67,21 +67,7 @@ angular.module('ymaps', [])
     },
     fitMarkers: true
 })
-.controller('YmapController', ['$scope', 'ymapsLoader', function ($scope, ymapsLoader) {
-    "use strict";
-    var self = this;
-    ymapsLoader.ready(function(ymaps) {
-        self.addMarker = function(coordinates, properties) {
-            var placeMark = new ymaps.Placemark(coordinates, properties);
-            $scope.markers.add(placeMark);
-            return placeMark;
-        };
-        self.removeMarker = function (marker) {
-            $scope.markers.remove(marker);
-        };
-    });
-}])
-.directive('yandexMap', ['$compile', 'ymapsLoader', 'ymapsConfig', function ($compile, ymapsLoader, config) {
+.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', function ($scope, $element, ymapsLoader, config) {
     "use strict";
     function initAutoFit(map, collection) {
         //brought from underscore http://underscorejs.org/#debounce
@@ -113,6 +99,51 @@ angular.module('ymaps', [])
             }, 100);
         collection.events.add('boundschange', fitMarkers);
     }
+    var self = this;
+    ymapsLoader.ready(function(ymaps) {
+        self.addMarker = function(coordinates, properties) {
+            var placeMark = new ymaps.Placemark(coordinates, properties);
+            $scope.markers.add(placeMark);
+            return placeMark;
+        };
+        self.removeMarker = function (marker) {
+            $scope.markers.remove(marker);
+        };
+        $scope.map = new ymaps.Map($element[0], {
+            center   : $scope.center || [0, 0],
+            zoom     : $scope.zoom || 0,
+            behaviors: config.mapBehaviors
+        });
+        $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
+        $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
+        $scope.map.geoObjects.add($scope.markers);
+        if(config.fitMarkers) {
+            initAutoFit($scope.map, $scope.markers);
+        }
+        var updatingBounds;
+       $scope.$watch('center', function(newVal) {
+            if(!updatingBounds) {
+                $scope.map.panTo(newVal);
+            }
+        }, true);
+        $scope.$watch('zoom', function(zoom) {
+            if(!updatingBounds) {
+                $scope.map.setZoom(zoom, {checkZoomRange: true});
+            }
+        });
+        $scope.map.events.add('boundschange', function(event) {
+            updatingBounds = true;
+            $scope.$apply(function() {
+                $scope.center = event.get('newCenter');
+                $scope.zoom = event.get('newZoom');
+            });
+            updatingBounds = false;
+        });
+
+    });
+}])
+.directive('yandexMap', ['$compile', 'ymapsLoader', function ($compile, ymapsLoader) {
+    "use strict";
     return {
         restrict: 'EA',
         scope: {
@@ -123,18 +154,7 @@ angular.module('ymaps', [])
             var childNodes = tElement.contents();
             tElement.html('');
             return function($scope, element) {
-                ymapsLoader.ready(function(ymaps) {
-                    $scope.map = new ymaps.Map(element[0], {
-                        center   : $scope.center || [0, 0],
-                        zoom     : $scope.zoom || 0,
-                        behaviors: config.mapBehaviors
-                    });
-                    $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
-                    $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
-                    $scope.map.geoObjects.add($scope.markers);
-                    if(config.fitMarkers) {
-                        initAutoFit($scope.map, $scope.markers);
-                    }
+                ymapsLoader.ready(function() {
                     element.append(childNodes);
                     $scope.$apply(function() {
                         $compile(childNodes)($scope.$parent);

@@ -33,8 +33,17 @@ describe("Ymaps", function() {
     describe('ymap-directive', function() {
         var $rootScope, $compile,
             scope, ymapsMock, mapMock, geoObjectsMock, placemarkMock;
+
+        function YaEvent(data) {
+            this.get = function(key) {
+                return data[key];
+            }
+        }
         beforeEach(module(function($provide) {
             mapMock = {
+                events: jasmine.createSpyObj('mapEvents', ['add']),
+                panTo: jasmine.createSpy('panSpy'),
+                setZoom: jasmine.createSpy('zoomSpy'),
                 controls: jasmine.createSpyObj('mapObjControls', ['add']),
                 geoObjects: jasmine.createSpyObj('mapObjElements', ['add'])
             };
@@ -78,6 +87,28 @@ describe("Ymaps", function() {
             var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
             expect(mapConfig.center).toEqual([55.23, 30.22]);
             expect(mapConfig.zoom).toBe(10);
+        });
+
+        it('should change map center when attribute has changed', function() {
+            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            mapMock.panTo.reset();
+            scope.$apply('center=[54.45, 31.16]');
+            expect(mapMock.panTo).toHaveBeenCalledWith([54.45, 31.16]);
+        });
+
+        it('should change map zoom when attribute has changed', function() {
+            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            mapMock.setZoom.reset();
+            scope.$apply('zoom=12');
+            expect(mapMock.setZoom).toHaveBeenCalledWith(12, {checkZoomRange: true});
+        });
+
+        it('should update model values of center and zoom', function() {
+            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            var callback = mapMock.events.add.mostRecentCall.args[1];
+            callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
+            expect(scope.center).toEqual([62.16, 34.56]);
+            expect(scope.zoom).toEqual(23);
         });
 
         it('should add nested markers to map', function() {
