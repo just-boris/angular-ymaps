@@ -85,17 +85,19 @@ angular.module('ymaps', [])
         }
         var markerMargin = 0.1,
             fitMarkers = debounce(function (event) {
-                var bounds = event.get('newBounds'),
+                var bounds = event.get('newBounds');
                 //make some margins from
-                    topRight = [
+                if (bounds !== null) {
+                    var topRight = [
                         bounds[1][0] + markerMargin,
                         bounds[1][1] + markerMargin
-                    ],
-                    bottomLeft = [
+                    ];
+                    var bottomLeft = [
                         bounds[0][0] - markerMargin,
                         bounds[0][1] - markerMargin
                     ];
-                map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+                    map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+                 }
             }, 100);
         collection.events.add('boundschange', fitMarkers);
     }
@@ -158,6 +160,9 @@ angular.module('ymaps', [])
                     element.append(childNodes);
                     $scope.$apply(function() {
                         $compile(childNodes)($scope.$parent);
+                    });
+                    $scope.$watch('center', function(newVal, oldVal) {
+                        $scope.map.panTo(newVal);
                     });
                 });
             };
