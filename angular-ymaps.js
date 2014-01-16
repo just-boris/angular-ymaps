@@ -109,29 +109,29 @@ angular.module('ymaps', [])
         self.removeMarker = function (marker) {
             $scope.markers.remove(marker);
         };
-        $scope.map = new ymaps.Map($element[0], {
+        self.map = new ymaps.Map($element[0], {
             center   : $scope.center || [0, 0],
             zoom     : $scope.zoom || 0,
             behaviors: config.mapBehaviors
         });
-        $scope.map.controls.add('zoomControl', { right: 5, top: 10 });
+        self.map.controls.add('zoomControl', { right: 5, top: 10 });
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
-        $scope.map.geoObjects.add($scope.markers);
+        self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {
-            initAutoFit($scope.map, $scope.markers);
+            initAutoFit(self.map, $scope.markers);
         }
         var updatingBounds;
        $scope.$watch('center', function(newVal) {
             if(!updatingBounds) {
-                $scope.map.panTo(newVal);
+                self.map.panTo(newVal);
             }
         }, true);
         $scope.$watch('zoom', function(zoom) {
             if(!updatingBounds) {
-                $scope.map.setZoom(zoom, {checkZoomRange: true});
+                self.map.setZoom(zoom, {checkZoomRange: true});
             }
         });
-        $scope.map.events.add('boundschange', function(event) {
+        self.map.events.add('boundschange', function(event) {
             updatingBounds = true;
             $scope.$apply(function() {
                 $scope.center = event.get('newCenter');
