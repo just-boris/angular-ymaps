@@ -1,8 +1,8 @@
-<div ng-init="center=[55.21, 34.30];zoom='10'">
+<div ng-init="center=[55.21, 34.30];zoom=10">
     <yandex-map center="center" zoom="zoom"></yandex-map>
     <div class="window">
-        <label>Широта: <input type="text" ng-model="center[0]" /></label><br>
-        <label>Долгота: <input type="text" ng-model="center[1]" /></label><br>
-        <label>Zoom: <input type="text" ng-model="zoom" /></label>
+        <label>Широта: <input type="number" ng-model="center[0]" /></label><br>
+        <label>Долгота: <input type="number" ng-model="center[1]" /></label><br>
+        <label>Zoom: <input type="number" ng-model="zoom" /></label>
     </div>
 </div>
