@@ -44,16 +44,19 @@ angular.module('ymaps', [])
         return deferred.promise;
     };
 }])
-.factory('ymapsLoader', ['$script', 'ymapsConfig', function($script, ymapsConfig) {
+.factory('ymapsLoader', ['$window', '$timeout', '$script', 'ymapsConfig', function($window, $timeout, $script, ymapsConfig) {
     "use strict";
-    var scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
-        return ymaps;
-    });
+    var scriptPromise;
     return {
         ready: function(callback) {
+            if(!scriptPromise) {
+                scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
+                    return $window.ymaps;
+                });
+            }
             scriptPromise.then(function(ymaps) {
                 ymaps.ready(function() {
-                    callback(ymaps);
+                    $timeout(function() {callback(ymaps);});
                 });
             });
         }
@@ -160,9 +163,7 @@ angular.module('ymaps', [])
             return function($scope, element) {
                 ymapsLoader.ready(function() {
                     element.append(childNodes);
-                    $scope.$apply(function() {
-                        $compile(childNodes)($scope.$parent);
-                    });
+                    $compile(childNodes)($scope.$parent);
                 });
             };
         },

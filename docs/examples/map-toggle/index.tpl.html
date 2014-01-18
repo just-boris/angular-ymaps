@@ -1,0 +1,7 @@
+<div ng-init="center=[58.39,33.91];zoom='10'">
+    <yandex-map ng-if="showMap" center="center" zoom="zoom"></yandex-map>
+    <div class="window">
+        <a href ng-hide="showMap" ng-click="showMap = true">Открыть карту</a>
+        <a href ng-show="showMap" ng-click="showMap = false">Скрыть карту</a>
+    </div>
+</div>

@@ -24,7 +24,8 @@ module.exports = function (grunt) {
         'markers-array',
         'markers-text',
         'balloons',
-        'update-center'
+        'update-center',
+        'map-toggle'
     ];
 
     // Project configuration.
