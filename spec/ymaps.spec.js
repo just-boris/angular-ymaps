@@ -37,12 +37,13 @@ describe("Ymaps", function() {
         function YaEvent(data) {
             this.get = function(key) {
                 return data[key];
-            }
+            };
         }
         beforeEach(module(function($provide) {
             mapMock = {
                 events: jasmine.createSpyObj('mapEvents', ['add']),
                 panTo: jasmine.createSpy('panSpy'),
+                setBounds: jasmine.createSpy('mapBounds'),
                 setZoom: jasmine.createSpy('zoomSpy'),
                 controls: jasmine.createSpyObj('mapObjControls', ['add']),
                 geoObjects: jasmine.createSpyObj('mapObjElements', ['add'])
@@ -50,6 +51,7 @@ describe("Ymaps", function() {
             geoObjectsMock = {
                 add: jasmine.createSpy('geoObjectsObjAdd'),
                 remove: jasmine.createSpy('geoObjectsObjRemove'),
+                getLength: jasmine.createSpy('geoObjectsGetLength').andReturn(3),
                 events: jasmine.createSpyObj('geoObjectsObjEvents', ['add'])
             };
             placemarkMock = {
@@ -60,6 +62,7 @@ describe("Ymaps", function() {
                 GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').andReturn(geoObjectsMock),
                 Placemark: jasmine.createSpy('placemark').andReturn(placemarkMock)
             };
+            $provide.value('debounce', angular.identity);
             $provide.value('ymapsLoader', { ready: function(callback) {callback(ymapsMock);}});
         }));
         beforeEach(inject(function(_$rootScope_, _$compile_) {
@@ -75,6 +78,10 @@ describe("Ymaps", function() {
             scope.$apply();
         }
 
+        function createMap() {
+            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+        }
+
         it('should create empty map with default center and zoom', function() {
             createElement('<yandex-map center="center" zoom="zoom"></yandex-map>');
             var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
@@ -83,28 +90,28 @@ describe("Ymaps", function() {
         });
 
         it('should create empty map with selected center and zoom', function() {
-            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            createMap();
             var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
             expect(mapConfig.center).toEqual([55.23, 30.22]);
             expect(mapConfig.zoom).toBe(10);
         });
 
         it('should change map center when attribute has changed', function() {
-            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            createMap();
             mapMock.panTo.reset();
             scope.$apply('center=[54.45, 31.16]');
             expect(mapMock.panTo).toHaveBeenCalledWith([54.45, 31.16]);
         });
 
         it('should change map zoom when attribute has changed', function() {
-            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            createMap();
             mapMock.setZoom.reset();
             scope.$apply('zoom=12');
             expect(mapMock.setZoom).toHaveBeenCalledWith(12, {checkZoomRange: true});
         });
 
         it('should update model values of center and zoom', function() {
-            createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            createMap();
             var callback = mapMock.events.add.mostRecentCall.args[1];
             callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
             expect(scope.center).toEqual([62.16, 34.56]);
@@ -122,6 +129,32 @@ describe("Ymaps", function() {
             expect(ymapsMock.Placemark.calls[0].args[0]).toEqual([55.23, 30.22]);
             expect(ymapsMock.Placemark.calls[1].args[0]).toEqual([45.15, 34.47]);
             expect(geoObjectsMock.add.calls.length).toBe(2);
+        });
+
+        describe('auto fit', function() {
+            it('should listen collection bounds', function() {
+                createMap();
+                expect(geoObjectsMock.events.add.mostRecentCall.args[0]).toBe('boundschange');
+            });
+
+            it('should update map bounds after event', function() {
+                createMap();
+                var callback = geoObjectsMock.events.add.mostRecentCall.args[1];
+                callback(new YaEvent({
+                    newBounds: [[55.23, 30.22], [58.35, 36.18]]
+                }));
+                expect(mapMock.setBounds).toHaveBeenCalled();
+            });
+
+            it('should not update map bounds when collection is empty', function() {
+                createMap();
+                geoObjectsMock.getLength.andReturn(0);
+                var callback = geoObjectsMock.events.add.mostRecentCall.args[1];
+                callback(new YaEvent({
+                    newBounds: [[55.23, 30.22], [58.35, 36.18]]
+                }));
+                expect(mapMock.setBounds).not.toHaveBeenCalled();
+            });
         });
 
         describe('with ngRepeat', function() {
