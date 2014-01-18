@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
     <link rel="stylesheet" href="github.css">
     <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
     <script src="angular-ymaps.js"></script>
     <script src="app.js"></script>
     <script type="text/javascript" src="highlight.pack.js"></script>
@@ -35,14 +35,13 @@
             <td>{{$index+1}}</td>
             <td><input type="text" ng-model="marker.coordinates[0]" class="form-control" /></td>
             <td><input type="text" ng-model="marker.coordinates[1]" class="form-control" /></td>
-            <td><button type="button" class="close" aria-hidden="true" ng-click="removeMarker(marker)">&times;</button></td>
+            <td><button type="button" class="close" ng-click="removeMarker(marker)">&times;</button></td>
         </tr>
         <tr ng-show="addingMarker">
             <td>*</td>
             <td><input type="text" ng-model="markerLat" placeholder="Lat" class="form-control" required /></td>
             <td><input type="text" ng-model="markerLon" placeholder="Lon" class="form-control" required /></td>
-            <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
-                        title="Добавить">+</button></td>
+            <td><button type="button" class="close" ng-click="submitMarker(markerLat, markerLon)" title="Добавить">+</button></td>
         </tr>
         </tbody></table>
         <button type="button" class="btn btn-default btn-block add_button" ng-hide="addingMarker"
@@ -123,8 +122,8 @@
         </div>
         <p>Нужно просто задать кординаты и присвоить их атрибуту center для карты и coordinates для маркера</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[55.21, 34.30];center=[55.21, 34.30]&quot;&gt;
-    &lt;yandex-map center=&quot;center&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[55.21, 34.30];center=[55.21, 34.30];zoom=10&quot;&gt;
+    &lt;yandex-map center=&quot;center&quot; zoom=&quot;zoom&quot;&gt;
         &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
     &lt;/yandex-map&gt;
 &lt;/div&gt;</code></pre>
@@ -138,8 +137,8 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
         </div>
         <p>Это немножко сложнее, нужно переопределить свойство <code>markerOptions</code> в настройках модуля. HTML такой же, как и в прошлом примере</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[56.27, 34.33];center=[56.27, 34.33]&quot;&gt;
-    &lt;yandex-map center=&quot;center&quot; zoom=&quot;&#x27;10&#x27;&quot;&gt;
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;coords=[56.27, 34.33];center=[56.27, 34.33];zoom=10&quot;&gt;
+    &lt;yandex-map center=&quot;center&quot; zoom=&quot;zoom&quot;&gt;
         &lt;!-- а маркер теперь синий! --&gt;
         &lt;ymap-marker coordinates=&quot;coords&quot;&gt;&lt;/ymap-marker&gt;
     &lt;/yandex-map&gt;
@@ -238,16 +237,33 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
     
         <div class="page-header">
             <a href="examples/update-center/" class="btn pull-right">Смотреть демо</a>
-            <h4>Обновление центра</h4>
+            <h4>Обновляемые атрибуты</h4>
         </div>
-        <p>Можно изменять атрибут 'center' и он будет меняться</p>
+        <p>Атрибуты 'center' и 'zoom' атоматически обновляются вслед за изменением положения карты</p>
         <h5>HTML</h5>
-        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;center=[55.21, 34.30];zoom=&#x27;10&#x27;&quot;&gt;
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;center=[55.21, 34.30];zoom=10&quot;&gt;
     &lt;yandex-map center=&quot;center&quot; zoom=&quot;zoom&quot;&gt;&lt;/yandex-map&gt;
     &lt;div class=&quot;window&quot;&gt;
-        &lt;label&gt;Широта: &lt;input type=&quot;text&quot; ng-model=&quot;center[0]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
-        &lt;label&gt;Долгота: &lt;input type=&quot;text&quot; ng-model=&quot;center[1]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
-        &lt;label&gt;Zoom: &lt;input type=&quot;text&quot; ng-model=&quot;zoom&quot; /&gt;&lt;/label&gt;
+        &lt;label&gt;Широта: &lt;input type=&quot;number&quot; ng-model=&quot;center[0]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
+        &lt;label&gt;Долгота: &lt;input type=&quot;number&quot; ng-model=&quot;center[1]&quot; /&gt;&lt;/label&gt;&lt;br&gt;
+        &lt;label&gt;Zoom: &lt;input type=&quot;number&quot; ng-model=&quot;zoom&quot; /&gt;&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
+angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
+    
+        <div class="page-header">
+            <a href="examples/map-toggle/" class="btn pull-right">Смотреть демо</a>
+            <h4>Скрываемая карта</h4>
+        </div>
+        <p>Можно показывать карту только после нажатия на кнопку. До этого код карты грузиться не будет</p>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-init=&quot;center=[58.39,33.91];zoom=&#x27;10&#x27;&quot;&gt;
+    &lt;yandex-map ng-if=&quot;showMap&quot; center=&quot;center&quot; zoom=&quot;zoom&quot;&gt;&lt;/yandex-map&gt;
+    &lt;div class=&quot;window&quot;&gt;
+        &lt;a href ng-hide=&quot;showMap&quot; ng-click=&quot;showMap = true&quot;&gt;Открыть карту&lt;/a&gt;
+        &lt;a href ng-show=&quot;showMap&quot; ng-click=&quot;showMap = false&quot;&gt;Скрыть карту&lt;/a&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
         <h5>Javascript</h5>

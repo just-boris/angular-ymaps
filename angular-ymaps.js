@@ -1,4 +1,4 @@
-/*! angular-ymaps 2014-01-16 */
+/*! angular-ymaps 2014-01-19 */
 /*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
@@ -9,7 +9,7 @@ angular.module('ymaps', [])
         el.onload = el.onreadystatechange = function () {
             if (el.readyState && el.readyState !== "complete" &&
                 el.readyState !== "loaded") {
-                return false;
+                return;
             }
             // если все загрузилось, то снимаем обработчик и выбрасываем callback
             el.onload = el.onreadystatechange = null;
@@ -45,16 +45,19 @@ angular.module('ymaps', [])
         return deferred.promise;
     };
 }])
-.factory('ymapsLoader', ['$script', 'ymapsConfig', function($script, ymapsConfig) {
+.factory('ymapsLoader', ['$window', '$timeout', '$script', 'ymapsConfig', function($window, $timeout, $script, ymapsConfig) {
     "use strict";
-    var scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
-        return ymaps;
-    });
+    var scriptPromise;
     return {
         ready: function(callback) {
+            if(!scriptPromise) {
+                scriptPromise = $script(ymapsConfig.apiUrl).then(function() {
+                    return $window.ymaps;
+                });
+            }
             scriptPromise.then(function(ymaps) {
                 ymaps.ready(function() {
-                    callback(ymaps);
+                    $timeout(function() {callback(ymaps);});
                 });
             });
         }
@@ -68,35 +71,38 @@ angular.module('ymaps', [])
     },
     fitMarkers: true
 })
-.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', function ($scope, $element, ymapsLoader, config) {
+.value('debounce', function (func, wait) {
+    "use strict";
+    var timeout = null;
+    return function () {
+        var context = this, args = arguments;
+        var later = function () {
+            timeout = null;
+            func.apply(context, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+})
+.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', function ($scope, $element, ymapsLoader, config, debounce) {
     "use strict";
     function initAutoFit(map, collection) {
         //brought from underscore http://underscorejs.org/#debounce
-        function debounce(func, wait) {
-            var timeout = null;
-            return function() {
-                var context = this, args = arguments;
-                var later = function() {
-                    timeout = null;
-                    func.apply(context, args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
         var markerMargin = 0.1,
             fitMarkers = debounce(function (event) {
-                var bounds = event.get('newBounds'),
-                //make some margins from
-                    topRight = [
-                        bounds[1][0] + markerMargin,
-                        bounds[1][1] + markerMargin
-                    ],
-                    bottomLeft = [
-                        bounds[0][0] - markerMargin,
-                        bounds[0][1] - markerMargin
-                    ];
-                map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+                if(collection.getLength() > 0) {
+                    var bounds = event.get('newBounds'),
+                    //make some margins from
+                        topRight = [
+                            bounds[1][0] + markerMargin,
+                            bounds[1][1] + markerMargin
+                        ],
+                        bottomLeft = [
+                            bounds[0][0] - markerMargin,
+                            bounds[0][1] - markerMargin
+                        ];
+                    map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
+                }
             }, 100);
         collection.events.add('boundschange', fitMarkers);
     }
@@ -133,6 +139,7 @@ angular.module('ymaps', [])
             }
         });
         self.map.events.add('boundschange', function(event) {
+            //noinspection JSUnusedAssignment
             updatingBounds = true;
             $scope.$apply(function() {
                 $scope.center = event.get('newCenter');
@@ -157,9 +164,7 @@ angular.module('ymaps', [])
             return function($scope, element) {
                 ymapsLoader.ready(function() {
                     element.append(childNodes);
-                    $scope.$apply(function() {
-                        $compile(childNodes)($scope.$parent);
-                    });
+                    $compile(childNodes)($scope.$parent);
                 });
             };
         },

@@ -35,7 +35,7 @@
             left: 10px;
         }
     </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
     <script src="../../angular-ymaps.js"></script>
     <script src="script.js"></script>
 </head>
@@ -43,8 +43,8 @@
     <header>
         <h1>Маркер нестандартного цвета</h1>
     </header>
-    <div ng-init="coords=[56.27, 34.33];center=[56.27, 34.33]">
-    <yandex-map center="center" zoom="'10'">
+    <div ng-init="coords=[56.27, 34.33];center=[56.27, 34.33];zoom=10">
+    <yandex-map center="center" zoom="zoom">
         <!-- а маркер теперь синий! -->
         <ymap-marker coordinates="coords"></ymap-marker>
     </yandex-map>

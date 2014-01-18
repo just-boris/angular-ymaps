@@ -35,7 +35,7 @@
             left: 10px;
         }
     </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
     <script src="../../angular-ymaps.js"></script>
     <script src="script.js"></script>
 </head>
@@ -43,8 +43,8 @@
     <header>
         <h1>Карта заданного масштаба с одним маркером в центре</h1>
     </header>
-    <div ng-init="coords=[55.21, 34.30];center=[55.21, 34.30]">
-    <yandex-map center="center" zoom="'10'">
+    <div ng-init="coords=[55.21, 34.30];center=[55.21, 34.30];zoom=10">
+    <yandex-map center="center" zoom="zoom">
         <ymap-marker coordinates="coords"></ymap-marker>
     </yandex-map>
 </div>

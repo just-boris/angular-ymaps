@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Обновляемые атрибуты</title>
+    <title>Скрываемая карта</title>
     <meta charset='utf-8'>
     <style type="text/css">
         html, body {
@@ -41,14 +41,13 @@
 </head>
 <body ng-app="MyApp">
     <header>
-        <h1>Обновляемые атрибуты</h1>
+        <h1>Скрываемая карта</h1>
     </header>
-    <div ng-init="center=[55.21, 34.30];zoom=10">
-    <yandex-map center="center" zoom="zoom"></yandex-map>
+    <div ng-init="center=[58.39,33.91];zoom='10'">
+    <yandex-map ng-if="showMap" center="center" zoom="zoom"></yandex-map>
     <div class="window">
-        <label>Широта: <input type="number" ng-model="center[0]" /></label><br>
-        <label>Долгота: <input type="number" ng-model="center[1]" /></label><br>
-        <label>Zoom: <input type="number" ng-model="zoom" /></label>
+        <a href ng-hide="showMap" ng-click="showMap = true">Открыть карту</a>
+        <a href ng-show="showMap" ng-click="showMap = false">Скрыть карту</a>
     </div>
 </div>
 </body>
