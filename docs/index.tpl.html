@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
     <link rel="stylesheet" href="github.css">
     <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
     <script src="angular-ymaps.js"></script>
     <script src="app.js"></script>
     <script type="text/javascript" src="highlight.pack.js"></script>
@@ -35,14 +35,13 @@
             <td>{{$index+1}}</td>
             <td><input type="text" ng-model="marker.coordinates[0]" class="form-control" /></td>
             <td><input type="text" ng-model="marker.coordinates[1]" class="form-control" /></td>
-            <td><button type="button" class="close" aria-hidden="true" ng-click="removeMarker(marker)">&times;</button></td>
+            <td><button type="button" class="close" ng-click="removeMarker(marker)">&times;</button></td>
         </tr>
         <tr ng-show="addingMarker">
             <td>*</td>
             <td><input type="text" ng-model="markerLat" placeholder="Lat" class="form-control" required /></td>
             <td><input type="text" ng-model="markerLon" placeholder="Lon" class="form-control" required /></td>
-            <td><button type="button" class="close" aria-hidden="true" ng-click="submitMarker(markerLat, markerLon)"
-                        title="Добавить">+</button></td>
+            <td><button type="button" class="close" ng-click="submitMarker(markerLat, markerLon)" title="Добавить">+</button></td>
         </tr>
         </tbody></table>
         <button type="button" class="btn btn-default btn-block add_button" ng-hide="addingMarker"
