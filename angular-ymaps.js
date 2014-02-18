@@ -158,10 +158,11 @@ angular.module('ymaps', [])
             zoom: '='
         },
         compile: function(tElement) {
-            var childNodes = tElement.contents();
+            var childNodes = tElement.html();
             tElement.html('');
             return function($scope, element) {
                 ymapsLoader.ready(function() {
+                    childNodes = angular.element('<div></div>').html(childNodes).contents();
                     element.append(childNodes);
                     $compile(childNodes)($scope.$parent);
                 });

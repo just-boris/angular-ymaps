@@ -89,6 +89,11 @@ describe("Ymaps", function() {
             expect(mapConfig.zoom).toBe(0);
         });
 
+        //fix issue #4
+        it('should work with spaces inside', function() {
+            createElement('<yandex-map center="center" zoom="zoom"> </yandex-map>');
+        });
+
         it('should create empty map with selected center and zoom', function() {
             createMap();
             var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
