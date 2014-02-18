@@ -1,6 +1,6 @@
 [Angular JS]: http://angularjs.org
 [ymaps.GeoObject]: http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml
-Angular-ymaps
+Angular-ymaps ![Travis](https://travis-ci.org/just-boris/angular-ymaps.png)
 =============
 
 Yandex Maps API as an Angular JS direcitive.
