@@ -6,7 +6,7 @@ Angular-ymaps [![Travis](https://travis-ci.org/just-boris/angular-ymaps.png)](ht
 Yandex Maps API as an Angular JS direcitive.
 
 Это модуль для [Angular JS], предназначенный для простого подключения и работы с Яндекс-картами. С его помощью можно
-вставлять Яндекс карту на страницу как html-тег, так же просто как и `img` или `button`
+вставлять Яндекс карту на страницу через html-тег, так же просто как `img` или `button`
 
 ###<a href="http://catatron.com/angular-ymaps/" class="hidden">Документация и пример использования</a>
 
@@ -16,7 +16,7 @@ Yandex Maps API as an Angular JS direcitive.
 * Подключить скрипт на страницу <br> 
   `<script src="angular-ymaps.js"></script>`
 * Добавить модуль `ymaps` в зависимости своего angular-приложения <br>
-  `angular.module('MyApp', [ymaps])`
+  `angular.module('MyApp', ['ymaps'])`
 * Теперь можно использовать в HTML новые теги 
   - `<yandex-map>` - Яндекс-карта
   - `<ymap-marker>` - маркер на карте, вставляется только внутрь тега `<yandex-map>`
