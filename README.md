@@ -13,11 +13,11 @@ Yandex Maps API as an Angular JS direcitive.
 ###Подключение
 
 * Скачать [библиотеку](http://catatron.com/angular-ymaps/angular-ymaps.js) или ее [упакованную версию](http://catatron.com/angular-ymaps/angular-ymaps.min.js)
-* Подключить скрипт на страницу <br> 
+* Подключить скрипт на страницу 
   `<script src="angular-ymaps.js"></script>`
-* Добавить модуль `ymaps` в зависимости своего angular-приложения <br>
+* Добавить модуль `ymaps` в зависимости своего angular-приложения
   `angular.module('MyApp', ['ymaps'])`
-* Теперь можно использовать в HTML новые теги 
+* Теперь можно использовать в HTML новые теги
   - `<yandex-map>` - Яндекс-карта
   - `<ymap-marker>` - маркер на карте, вставляется только внутрь тега `<yandex-map>`
 
