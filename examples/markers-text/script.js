@@ -1,6 +1,6 @@
 angular.module('MyApp', ['ymaps']).config(function(ymapsConfig) {
     //нужно сменить preset у карты на специальный текстовый
-    ymapsConfig.markerOptions.preset = 'twirl#darkgreenStretchyIcon';
+    ymapsConfig.markerOptions.preset = 'islands#darkgreenStretchyIcon';
 })
 .controller('MapCtrl', function($scope) {
     //создаем массив с данными для меток

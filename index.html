@@ -52,12 +52,12 @@
     </yandex-map>
 </div>
 <div class="description" id="docs">
-    <h1>Angular-ymaps</h1>
+    <h1>Angular-ymaps <a href="https://travis-ci.org/just-boris/angular-ymaps"><img src="https://travis-ci.org/just-boris/angular-ymaps.png" alt="Travis" title="" /></a></h1>
 
 <p>Yandex Maps API as an Angular JS direcitive.</p>
 
 <p>Это модуль для <a href="http://angularjs.org">Angular JS</a>, предназначенный для простого подключения и работы с Яндекс-картами. С его помощью можно
-вставлять Яндекс карту на страницу как html-тег, так же просто как и <code>img</code> или <code>button</code></p>
+вставлять Яндекс карту на страницу через html-тег, так же просто как <code>img</code> или <code>button</code></p>
 
 <h3><a href="http://catatron.com/angular-ymaps/" class="hidden">Документация и пример использования</a></h3>
 
@@ -65,14 +65,23 @@
 
 <ul>
 <li>Скачать <a href="http://catatron.com/angular-ymaps/angular-ymaps.js">библиотеку</a> или ее <a href="http://catatron.com/angular-ymaps/angular-ymaps.min.js">упакованную версию</a></li>
-<li>Подключить скрипт на страницу <br> 
+<li>Подключить скрипт на страницу 
 <code>&lt;script src="angular-ymaps.js"&gt;&lt;/script&gt;</code></li>
-<li>Добавить модуль <code>ymaps</code> в зависимости своего angular-приложения <br>
-<code>angular.module('MyApp', [ymaps])</code></li>
-<li>Теперь можно использовать в HTML новые теги 
+<li>Добавить модуль <code>ymaps</code> в зависимости своего angular-приложения
+<code>angular.module('MyApp', ['ymaps'])</code></li>
+<li>Теперь можно использовать в HTML новые теги
 <ul><li><code>&lt;yandex-map&gt;</code> - Яндекс-карта</li>
 <li><code>&lt;ymap-marker&gt;</code> - маркер на карте, вставляется только внутрь тега <code>&lt;yandex-map&gt;</code></li></ul></li>
 </ul>
+
+<h4>Bower</h4>
+
+<p>Можно установить библиотеку из bower:</p>
+
+<pre><code>bower install angular-ymaps --save
+</code></pre>
+
+<h3>API</h3>
 
 <h4>Тег yandex-map:</h4>
 
@@ -147,8 +156,9 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
         <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
 angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).config(function(ymapsConfig) {
     //выставляем синий цвет иконкам вместо зеленого
-    ymapsConfig.markerOptions.preset = &#x27;twirl#darkblueDotIcon&#x27;;
-});</code></pre>
+    ymapsConfig.markerOptions.preset = &#x27;islands#darkblueDotIcon&#x27;;
+});
+</code></pre>
     
         <div class="page-header">
             <a href="examples/markers-array/" class="btn pull-right">Смотреть демо</a>
@@ -193,7 +203,7 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).config(function(ymapsConfig) {
     //нужно сменить preset у карты на специальный текстовый
-    ymapsConfig.markerOptions.preset = &#x27;twirl#darkgreenStretchyIcon&#x27;;
+    ymapsConfig.markerOptions.preset = &#x27;islands#darkgreenStretchyIcon&#x27;;
 })
 .controller(&#x27;MapCtrl&#x27;, function($scope) {
     //создаем массив с данными для меток
@@ -206,7 +216,8 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
     $scope.map = {
         center: [53.57, 37.13], zoom: 12
     };
-});</code></pre>
+});
+</code></pre>
     
         <div class="page-header">
             <a href="examples/balloons/" class="btn pull-right">Смотреть демо</a>
