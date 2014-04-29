@@ -52,6 +52,7 @@ describe("Ymaps", function() {
                 add: jasmine.createSpy('geoObjectsObjAdd'),
                 remove: jasmine.createSpy('geoObjectsObjRemove'),
                 getLength: jasmine.createSpy('geoObjectsGetLength').andReturn(3),
+                getBounds: jasmine.createSpy('geoObjectsGetBounds'),
                 events: jasmine.createSpyObj('geoObjectsObjEvents', ['add'])
             };
             placemarkMock = {
@@ -144,10 +145,9 @@ describe("Ymaps", function() {
 
             it('should update map bounds after event', function() {
                 createMap();
+                geoObjectsMock.getBounds.andReturn([[55.23, 30.22], [58.35, 36.18]]);
                 var callback = geoObjectsMock.events.add.mostRecentCall.args[1];
-                callback(new YaEvent({
-                    newBounds: [[55.23, 30.22], [58.35, 36.18]]
-                }));
+                callback();
                 expect(mapMock.setBounds).toHaveBeenCalled();
             });
 
