@@ -21,6 +21,14 @@ Yandex Maps API as an Angular JS direcitive.
   - `<yandex-map>` - Яндекс-карта
   - `<ymap-marker>` - маркер на карте, вставляется только внутрь тега `<yandex-map>`
 
+#### Bower
+
+Можно установить библиотеку из bower:
+
+    bower install angular-ymaps --save
+
+### API
+
 ####Тег yandex-map:
 
     <yandex-map center="map.center" zoom="map.zoom"></yandex-map>

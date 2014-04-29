@@ -1,0 +1,29 @@
+{
+  "name": "angular-ymaps",
+  "main": "angular-ymaps.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/just-boris/angular-ymaps",
+  "authors": [
+    "Boris <just-boris@hotmail.com>"
+  ],
+  "description": "yandex-maps as angular directive",
+  "keywords": [
+    "angular",
+    "yandex",
+    "ymaps",
+    "maps",
+    "geolocation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "docs",
+    "tasks",
+    "spec"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16"
+  }
+}
