@@ -228,23 +228,25 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
         <pre ng-non-bindable><code data-language="HTML">&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
     &lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
         &lt;!-- загружаем текст сообщения в атрибут properties --&gt;
-        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;$index+1&quot; coordinates=&quot;marker.coordinates&quot; properties=&quot;marker.properties&quot;&gt;&lt;/ymap-marker&gt;
+        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;$index+1&quot; coordinates=&quot;marker.coordinates&quot; properties=&quot;marker.properties&quot; options=&quot;marker.options&quot;&gt;&lt;/ymap-marker&gt;
     &lt;/yandex-map&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;
+</code></pre>
         <h5>Javascript</h5>
         <pre ng-non-bindable><code data-language="javascript">//нам нужно создать контроллер, если у вас его еще нет
 angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&#x27;, function($scope) {
     //создаем массив координат и данных для меток и балунов
     $scope.markers = [
         {coordinates:[56.56, 38.63], properties: {balloonContent: &#x27;Здесь рыбы нет!&#x27;}},
-        {coordinates:[55.16, 39.89], properties: {balloonContent: &#x27;Здесь рыбы тоже нет&#x27;}},
+        {coordinates:[55.16, 39.89], properties: {balloonContent: &#x27;Здесь рыбы тоже нет&#x27;}, options: {preset: &#x27;islands#icon&#x27;, iconColor: &#x27;#a5260a&#x27;}},
         {coordinates:[55.08, 38.96], properties: {balloonContent: &#x27;А здесь есть!&#x27;}}
     ];
     //настройки положения карты
     $scope.map = {
         center: [55.55, 39.84], zoom: 12
     };
-});</code></pre>
+});
+</code></pre>
     
         <div class="page-header">
             <a href="examples/update-center/" class="btn pull-right">Смотреть демо</a>

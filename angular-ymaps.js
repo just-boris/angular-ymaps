@@ -1,4 +1,4 @@
-/*! angular-ymaps 2014-04-30 */
+/*! angular-ymaps 2014-06-05 */
 /*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
@@ -108,9 +108,10 @@ angular.module('ymaps', [])
     }
     var self = this;
     ymapsLoader.ready(function(ymaps) {
-        self.addMarker = function(coordinates, properties) {
-            var placeMark = new ymaps.Placemark(coordinates, properties);
+        self.addMarker = function(coordinates, properties, options) {
+            var placeMark = new ymaps.Placemark(coordinates, properties, options);
             $scope.markers.add(placeMark);
+
             return placeMark;
         };
         self.removeMarker = function (marker) {
@@ -179,7 +180,8 @@ angular.module('ymaps', [])
         scope   : {
             coordinates: '=',
             index: '=',
-            properties: '='
+            properties: '=',
+            options: '='
         },
         link    : function ($scope, elm, attr, mapCtrl) {
             var marker;
@@ -192,7 +194,7 @@ angular.module('ymaps', [])
                     marker.geometry.setCoordinates(coord);
                 }
                 else {
-                    marker = mapCtrl.addMarker(coord, angular.extend({iconContent: $scope.index}, $scope.properties));
+                    marker = mapCtrl.addMarker(coord, angular.extend({iconContent: $scope.index}, $scope.properties), $scope.options);
                 }
             }
 
