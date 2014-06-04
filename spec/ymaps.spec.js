@@ -128,12 +128,13 @@ describe("Ymaps", function() {
             createElement(
                 '<yandex-map center="center" zoom="zoom">' +
                     '<ymap-marker coordinates="marker1"></ymap-marker>'+
-                    '<ymap-marker coordinates="marker2"></ymap-marker>'+
+                    '<ymap-marker coordinates="marker2" options="options"></ymap-marker>'+
                 '</yandex-map>',
-                {marker1: [55.23, 30.22], marker2: [45.15, 34.47]}
+                {marker1: [55.23, 30.22], marker2: [45.15, 34.47], options: {preset: 'islands#icon', iconColor: '#a5260a'}}
             );
             expect(ymapsMock.Placemark.calls[0].args[0]).toEqual([55.23, 30.22]);
             expect(ymapsMock.Placemark.calls[1].args[0]).toEqual([45.15, 34.47]);
+            expect(ymapsMock.Placemark.calls[1].args[2]).toEqual({preset: 'islands#icon', iconColor: '#a5260a'});
             expect(geoObjectsMock.add.calls.length).toBe(2);
         });
 
