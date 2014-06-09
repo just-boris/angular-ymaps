@@ -6,9 +6,8 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
         // list of files / patterns to load in the browser
         files: [
-            'http://yandex.st/jquery/2.0.3/jquery.js',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js',
-            'http://code.angularjs.org/1.0.8/angular-mocks.js',
+            'bower_components/angular/angular.js',
+            'bower_components/angular-mocks/angular-mocks.js',
             'angular-ymaps.js',
             'spec/*.js'
         ],

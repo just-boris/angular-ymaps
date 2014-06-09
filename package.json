@@ -1,6 +1,10 @@
 {
   "author": "https://github.com/just-boris",
   "name": "angular-ymaps",
+  "scripts": {
+    "prepublish": "bower install",
+    "test": "grunt"
+  },
   "version": "0.0.3",
   "repository": "git@github.com:just-boris/angular-ymaps.git",
   "dependencies": {},
@@ -22,6 +26,8 @@
     "node-markdown": "~0.1.1",
     "grunt-contrib-copy": "~0.5.0",
     "underscore": "~1.5.2",
-    "grunt-build-control": "~0.1.1"
+    "grunt-build-control": "~0.1.1",
+    "grunt-cli": "~0.1.13",
+      "bower": "~1.3.5"
   }
 }
