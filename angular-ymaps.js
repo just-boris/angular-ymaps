@@ -149,24 +149,22 @@ angular.module('ymaps', [])
 
     });
 }])
-.directive('yandexMap', ['$compile', 'ymapsLoader', function ($compile, ymapsLoader) {
+.directive('yandexMap', ['ymapsLoader', function (ymapsLoader) {
     "use strict";
     return {
         restrict: 'EA',
+        terminal: true,
+        transclude: true,
         scope: {
             center: '=',
             zoom: '='
         },
-        compile: function(tElement) {
-            var childNodes = tElement.html();
-            tElement.html('');
-            return function($scope, element) {
-                ymapsLoader.ready(function() {
-                    childNodes = angular.element('<div></div>').html(childNodes).contents();
-                    element.append(childNodes);
-                    $compile(childNodes)($scope.$parent);
+        link: function($scope, element, attrs, ctrl, transcludeFn) {
+            ymapsLoader.ready(function() {
+                transcludeFn(function( copy ) {
+                    element.append(copy);
                 });
-            };
+            });
         },
         controller: 'YmapController'
     };
