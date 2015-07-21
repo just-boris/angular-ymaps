@@ -40,31 +40,39 @@ describe('Ymaps', function() {
             };
         }
         beforeEach(module(function($provide) {
-            mapMock = {
-                events: jasmine.createSpyObj('mapEvents', ['add']),
-                panTo: jasmine.createSpy('panSpy'),
-                setBounds: jasmine.createSpy('mapBounds'),
-                setZoom: jasmine.createSpy('zoomSpy'),
-                controls: jasmine.createSpyObj('mapObjControls', ['add']),
-                geoObjects: jasmine.createSpyObj('mapObjElements', ['add'])
-            };
-            geoObjectsMock = {
-                add: jasmine.createSpy('geoObjectsObjAdd'),
-                remove: jasmine.createSpy('geoObjectsObjRemove'),
-                getLength: jasmine.createSpy('geoObjectsGetLength').and.returnValue(3),
-                getBounds: jasmine.createSpy('geoObjectsGetBounds'),
-                events: jasmine.createSpyObj('geoObjectsObjEvents', ['add'])
-            };
-            placemarkMock = {
-                properties: jasmine.createSpyObj('placemarkObjProperties', ['set'])
-            };
-            ymapsMock = {
-                Map: jasmine.createSpy('map').and.returnValue(mapMock),
-                GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').and.returnValue(geoObjectsMock),
-                Placemark: jasmine.createSpy('placemark').and.returnValue(placemarkMock)
-            };
             $provide.value('debounce', angular.identity);
-            $provide.value('ymapsLoader', { ready: function(callback) {callback(ymapsMock);}});
+            $provide.factory('ymapsLoader', function($q) {
+                mapMock = {
+                    events: jasmine.createSpyObj('mapEvents', ['add']),
+                    panTo: jasmine.createSpy('panSpy').and.callFake(function() {
+                        this.deferred = $q.defer();
+                        this.deferred.promise.always = this.deferred.promise.finally;
+                        return this.deferred.promise;
+                    }),
+                    setBounds: jasmine.createSpy('mapBounds'),
+                    setZoom: jasmine.createSpy('zoomSpy'),
+                    controls: jasmine.createSpyObj('mapObjControls', ['add']),
+                    geoObjects: jasmine.createSpyObj('mapObjElements', ['add'])
+                };
+                geoObjectsMock = {
+                    add: jasmine.createSpy('geoObjectsObjAdd'),
+                    remove: jasmine.createSpy('geoObjectsObjRemove'),
+                    getLength: jasmine.createSpy('geoObjectsGetLength').and.returnValue(3),
+                    getBounds: jasmine.createSpy('geoObjectsGetBounds'),
+                    events: jasmine.createSpyObj('geoObjectsObjEvents', ['add'])
+                };
+                placemarkMock = {
+                    properties: jasmine.createSpyObj('placemarkObjProperties', ['set'])
+                };
+                ymapsMock = {
+                    Map: jasmine.createSpy('map').and.returnValue(mapMock),
+                    GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').and.returnValue(geoObjectsMock),
+                    Placemark: jasmine.createSpy('placemark').and.returnValue(placemarkMock)
+                };
+                return { 
+                    ready: function(callback) {callback(ymapsMock);}
+                };
+            });
         }));
         beforeEach(inject(function(_$rootScope_, _$compile_) {
             $rootScope = _$rootScope_;
@@ -81,6 +89,9 @@ describe('Ymaps', function() {
 
         function createMap() {
             createElement('<yandex-map center="center" zoom="zoom"></yandex-map>', {center: [55.23, 30.22], zoom: 10});
+            mapMock.deferred.resolve();
+            mapMock.panTo.calls.reset();
+            scope.$apply();
         }
 
         it('should create empty map with default center and zoom', function() {
@@ -123,6 +134,19 @@ describe('Ymaps', function() {
             expect(scope.center).toEqual([62.16, 34.56]);
             expect(scope.zoom).toEqual(23);
         });
+
+        it('should ignore bounds change while center is moving', function() {
+            createMap();
+            scope.center = [45.15, 34.47];
+            scope.$apply();
+            var callback = mapMock.events.add.calls.mostRecent().args[1];
+            callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
+            expect(scope.center).toEqual([45.15, 34.47]);
+            mapMock.deferred.resolve();
+            scope.$apply();
+            callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
+            expect(scope.center).toEqual([62.16, 34.56]);
+        });        
 
         it('should add nested markers to map', function() {
             createElement(

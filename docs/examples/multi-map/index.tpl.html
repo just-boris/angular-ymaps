@@ -13,6 +13,6 @@
     	<yandex-map center="rightMap.center" zoom="rightMap.zoom"></yandex-map>
     </div>
     <div class="window">
-        <label><input type="checkbox" ng-model="bindMaps" /> Связать карты</label>
+        <label><input type="checkbox" ng-model="bindMaps" ng-change="updateBinding()" /> Связать карты</label>
     </div>
 </div>

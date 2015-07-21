@@ -126,18 +126,26 @@ angular.module('ymaps', [])
         if(config.fitMarkers) {
             initAutoFit(self.map, $scope.markers);
         }
-        var updatingBounds;
+        var updatingBounds, moving;
        $scope.$watch('center', function(newVal) {
-            if(!updatingBounds) {
-                self.map.panTo(newVal);
+            if(updatingBounds) {
+                return;
             }
+            moving = true;
+            self.map.panTo(newVal).always(function() {
+                moving = false;
+            });
         }, true);
         $scope.$watch('zoom', function(zoom) {
-            if(!updatingBounds) {
-                self.map.setZoom(zoom, {checkZoomRange: true});
+            if(updatingBounds) {
+               return; 
             }
+            self.map.setZoom(zoom, {checkZoomRange: true});
         });
         self.map.events.add('boundschange', function(event) {
+            if(moving) {
+                return;
+            }
             //noinspection JSUnusedAssignment
             updatingBounds = true;
             $scope.$apply(function() {
