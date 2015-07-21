@@ -1,6 +1,6 @@
 /*globals jasmine, describe, beforeEach, it, afterEach, expect, angular, module, inject */
-describe("Ymaps", function() {
-    "use strict";
+describe('Ymaps', function() {
+    'use strict';
     beforeEach(module('ymaps'));
 
     describe('Loader', function() {
@@ -51,7 +51,7 @@ describe("Ymaps", function() {
             geoObjectsMock = {
                 add: jasmine.createSpy('geoObjectsObjAdd'),
                 remove: jasmine.createSpy('geoObjectsObjRemove'),
-                getLength: jasmine.createSpy('geoObjectsGetLength').andReturn(3),
+                getLength: jasmine.createSpy('geoObjectsGetLength').and.returnValue(3),
                 getBounds: jasmine.createSpy('geoObjectsGetBounds'),
                 events: jasmine.createSpyObj('geoObjectsObjEvents', ['add'])
             };
@@ -59,9 +59,9 @@ describe("Ymaps", function() {
                 properties: jasmine.createSpyObj('placemarkObjProperties', ['set'])
             };
             ymapsMock = {
-                Map: jasmine.createSpy('map').andReturn(mapMock),
-                GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').andReturn(geoObjectsMock),
-                Placemark: jasmine.createSpy('placemark').andReturn(placemarkMock)
+                Map: jasmine.createSpy('map').and.returnValue(mapMock),
+                GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').and.returnValue(geoObjectsMock),
+                Placemark: jasmine.createSpy('placemark').and.returnValue(placemarkMock)
             };
             $provide.value('debounce', angular.identity);
             $provide.value('ymapsLoader', { ready: function(callback) {callback(ymapsMock);}});
@@ -85,7 +85,7 @@ describe("Ymaps", function() {
 
         it('should create empty map with default center and zoom', function() {
             createElement('<yandex-map center="center" zoom="zoom"></yandex-map>');
-            var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
+            var mapConfig = ymapsMock.Map.calls.argsFor(0)[1];
             expect(mapConfig.center).toEqual([0, 0]);
             expect(mapConfig.zoom).toBe(0);
         });
@@ -97,28 +97,28 @@ describe("Ymaps", function() {
 
         it('should create empty map with selected center and zoom', function() {
             createMap();
-            var mapConfig = ymapsMock.Map.mostRecentCall.args[1];
+            var mapConfig = ymapsMock.Map.calls.argsFor(0)[1];
             expect(mapConfig.center).toEqual([55.23, 30.22]);
             expect(mapConfig.zoom).toBe(10);
         });
 
         it('should change map center when attribute has changed', function() {
             createMap();
-            mapMock.panTo.reset();
+            mapMock.panTo.calls.reset();
             scope.$apply('center=[54.45, 31.16]');
             expect(mapMock.panTo).toHaveBeenCalledWith([54.45, 31.16]);
         });
 
         it('should change map zoom when attribute has changed', function() {
             createMap();
-            mapMock.setZoom.reset();
+            mapMock.setZoom.calls.reset();
             scope.$apply('zoom=12');
             expect(mapMock.setZoom).toHaveBeenCalledWith(12, {checkZoomRange: true});
         });
 
         it('should update model values of center and zoom', function() {
             createMap();
-            var callback = mapMock.events.add.mostRecentCall.args[1];
+            var callback = mapMock.events.add.calls.mostRecent().args[1];
             callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
             expect(scope.center).toEqual([62.16, 34.56]);
             expect(scope.zoom).toEqual(23);
@@ -132,30 +132,30 @@ describe("Ymaps", function() {
                 '</yandex-map>',
                 {marker1: [55.23, 30.22], marker2: [45.15, 34.47], options: {preset: 'islands#icon', iconColor: '#a5260a'}}
             );
-            expect(ymapsMock.Placemark.calls[0].args[0]).toEqual([55.23, 30.22]);
-            expect(ymapsMock.Placemark.calls[1].args[0]).toEqual([45.15, 34.47]);
-            expect(ymapsMock.Placemark.calls[1].args[2]).toEqual({preset: 'islands#icon', iconColor: '#a5260a'});
-            expect(geoObjectsMock.add.calls.length).toBe(2);
+            expect(ymapsMock.Placemark.calls.argsFor(0)[0]).toEqual([55.23, 30.22]);
+            expect(ymapsMock.Placemark.calls.argsFor(1)[0]).toEqual([45.15, 34.47]);
+            expect(ymapsMock.Placemark.calls.argsFor(1)[2]).toEqual({preset: 'islands#icon', iconColor: '#a5260a'});
+            expect(geoObjectsMock.add.calls.count()).toBe(2);
         });
 
         describe('auto fit', function() {
             it('should listen collection bounds', function() {
                 createMap();
-                expect(geoObjectsMock.events.add.mostRecentCall.args[0]).toBe('boundschange');
+                expect(geoObjectsMock.events.add).toHaveBeenCalledWith('boundschange', jasmine.any(Function));
             });
 
             it('should update map bounds after event', function() {
                 createMap();
-                geoObjectsMock.getBounds.andReturn([[55.23, 30.22], [58.35, 36.18]]);
-                var callback = geoObjectsMock.events.add.mostRecentCall.args[1];
+                geoObjectsMock.getBounds.and.returnValue([[55.23, 30.22], [58.35, 36.18]]);
+                var callback = geoObjectsMock.events.add.calls.argsFor(0)[1];
                 callback();
                 expect(mapMock.setBounds).toHaveBeenCalled();
             });
 
             it('should not update map bounds when collection is empty', function() {
                 createMap();
-                geoObjectsMock.getLength.andReturn(0);
-                var callback = geoObjectsMock.events.add.mostRecentCall.args[1];
+                geoObjectsMock.getLength.and.returnValue(0);
+                var callback = geoObjectsMock.events.add.calls.argsFor(0)[1];
                 callback(new YaEvent({
                     newBounds: [[55.23, 30.22], [58.35, 36.18]]
                 }));
@@ -174,23 +174,23 @@ describe("Ymaps", function() {
             });
 
             it('should add array of markers', function() {
-                expect(geoObjectsMock.add.calls.length).toBe(2);
-                expect(ymapsMock.Placemark.calls[0].args[0]).toEqual([55.23, 30.22]);
-                expect(ymapsMock.Placemark.calls[1].args[0]).toEqual([45.15, 34.47]);
+                expect(geoObjectsMock.add.calls.count()).toBe(2);
+                expect(ymapsMock.Placemark).toHaveBeenCalledWith([55.23, 30.22], jasmine.any(Object), undefined);
+                expect(ymapsMock.Placemark).toHaveBeenCalledWith([45.15, 34.47], jasmine.any(Object), undefined);
             });
 
             it('should add new markers', function() {
                 scope.markers.push([40.42, 45.30]);
                 scope.$apply();
-                expect(geoObjectsMock.add.calls.length).toBe(3);
-                expect(ymapsMock.Placemark.mostRecentCall.args[0]).toEqual([40.42, 45.30]);
+                expect(geoObjectsMock.add.calls.count()).toBe(3);
+                expect(ymapsMock.Placemark).toHaveBeenCalledWith([40.42, 45.30], jasmine.any(Object), undefined);
             });
 
             it('should remove markers and update indexes', function() {
                 scope.markers.splice(0, 1);
                 scope.$apply();
-                expect(geoObjectsMock.remove.calls.length).toBe(1);
-                expect(placemarkMock.properties.set.calls.length).toBe(1);
+                expect(geoObjectsMock.remove.calls.count()).toBe(1);
+                expect(placemarkMock.properties.set.calls.count()).toBe(1);
                 expect(placemarkMock.properties.set).toHaveBeenCalledWith('iconContent', 1);
             });
         });

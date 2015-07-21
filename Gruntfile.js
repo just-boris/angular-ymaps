@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    "use strict";
+    'use strict';
     function getExamplesForPages(examples) {
         var result = {};
         examples.forEach(function(example) {
@@ -33,12 +33,11 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         karma: {
             options: {
-                configFile: 'karma.conf.js'
+                configFile: 'karma.conf.js',
+                browsers: ['Firefox']
             },
             unit: {},
-            travis: {
-                browsers: ['Firefox']
-            }
+            travis: {}
         },
         jshint: {
             files: ['<%= pkg.name %>.js']
