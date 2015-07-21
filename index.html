@@ -304,7 +304,7 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
     	&lt;yandex-map center=&quot;rightMap.center&quot; zoom=&quot;rightMap.zoom&quot;&gt;&lt;/yandex-map&gt;
     &lt;/div&gt;
     &lt;div class=&quot;window&quot;&gt;
-        &lt;label&gt;&lt;input type=&quot;checkbox&quot; ng-model=&quot;bindMaps&quot; /&gt; Связать карты&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; ng-model=&quot;bindMaps&quot; ng-change=&quot;updateBinding()&quot; /&gt; Связать карты&lt;/label&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
         <h5>Javascript</h5>
@@ -316,13 +316,13 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
     $scope.rightMap = {
         center: [59.93, 30.33], zoom: 12
     };
-    $scope.$watch(&#x27;bindMaps&#x27;, function(bindMaps) {
-        if(bindMaps) {
+    $scope.updateBinding = function() {
+        if($scope.bindMaps) {
             $scope.rightMap = $scope.leftMap;
         } else {
             $scope.rightMap = angular.copy($scope.leftMap);
         }
-    });
+    };
 });
 </code></pre>
     
