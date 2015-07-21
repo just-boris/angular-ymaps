@@ -283,6 +283,49 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
         <pre ng-non-bindable><code data-language="javascript">//кофигурация модуля, использующего карты
 angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]);</code></pre>
     
+        <div class="page-header">
+            <a href="examples/multi-map/" class="btn pull-right">Смотреть демо</a>
+            <h4>Несколько карт на странице</h4>
+        </div>
+        <p>На странице может быть несколько независисмых карт. При этом они могут синхронизировать свой центр, через общее свойство</p>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML">&lt;style type=&quot;text/css&quot;&gt;
+	.row {
+		width: 50%;
+		float: left;
+		height: 100%;
+	}
+&lt;/style&gt;
+&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+    	&lt;yandex-map center=&quot;leftMap.center&quot; zoom=&quot;leftMap.zoom&quot;&gt;&lt;/yandex-map&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+    	&lt;yandex-map center=&quot;rightMap.center&quot; zoom=&quot;rightMap.zoom&quot;&gt;&lt;/yandex-map&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;window&quot;&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; ng-model=&quot;bindMaps&quot; /&gt; Связать карты&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript">angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&#x27;, function($scope) {
+    //настройки положения карты
+    $scope.leftMap = {
+        center: [55.74, 37.61], zoom: 12
+    };
+    $scope.rightMap = {
+        center: [59.93, 30.33], zoom: 12
+    };
+    $scope.$watch(&#x27;bindMaps&#x27;, function(bindMaps) {
+        if(bindMaps) {
+            $scope.rightMap = $scope.leftMap;
+        } else {
+            $scope.rightMap = angular.copy($scope.leftMap);
+        }
+    });
+});
+</code></pre>
+    
 
     <p>Но это еще не все, есть и другие варианты примения, для них &mdash; документация <a href="http://api.yandex.ru/maps/doc/intro/concepts/intro.xml">Яндекс-карт</a>
     и <a href="http://docs.angularjs.org/api/">AngularJS</a> вам в помощь</p>
