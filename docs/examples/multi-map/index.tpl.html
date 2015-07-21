@@ -1,0 +1,18 @@
+<style type="text/css">
+	.row {
+		width: 50%;
+		float: left;
+		height: 100%;
+	}
+</style>
+<div ng-controller="MapCtrl">
+    <div class="row">
+    	<yandex-map center="leftMap.center" zoom="leftMap.zoom"></yandex-map>
+    </div>
+    <div class="row">
+    	<yandex-map center="rightMap.center" zoom="rightMap.zoom"></yandex-map>
+    </div>
+    <div class="window">
+        <label><input type="checkbox" ng-model="bindMaps" /> Связать карты</label>
+    </div>
+</div>
