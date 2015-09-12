@@ -1,6 +1,6 @@
 [Angular JS]: http://angularjs.org
 [ymaps.GeoObject]: http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml
-Angular-ymaps [![Travis](https://travis-ci.org/just-boris/angular-ymaps.png)](https://travis-ci.org/just-boris/angular-ymaps)
+Angular-ymaps [![Build Status](https://travis-ci.org/just-boris/angular-ymaps.svg?branch=master)](https://travis-ci.org/just-boris/angular-ymaps)
 =============
 
 Yandex Maps API as an Angular JS direcitive.
@@ -13,7 +13,7 @@ Yandex Maps API as an Angular JS direcitive.
 ###Подключение
 
 * Скачать [библиотеку](http://catatron.com/angular-ymaps/angular-ymaps.js) или ее [упакованную версию](http://catatron.com/angular-ymaps/angular-ymaps.min.js)
-* Подключить скрипт на страницу 
+* Подключить скрипт на страницу
   `<script src="angular-ymaps.js"></script>`
 * Добавить модуль `ymaps` в зависимости своего angular-приложения
   `angular.module('MyApp', ['ymaps'])`
