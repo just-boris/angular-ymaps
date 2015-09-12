@@ -68,8 +68,10 @@ angular.module('ymaps', [])
     markerOptions: {
         preset: 'islands#darkgreenIcon'
     },
-    fitMarkers: true
+    fitMarkers: true,
+    forMarkersZoomMargin: 40,
 })
+//brought from underscore http://underscorejs.org/#debounce
 .value('debounce', function (func, wait) {
     "use strict";
     var timeout = null;
@@ -85,25 +87,15 @@ angular.module('ymaps', [])
 })
 .controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', function ($scope, $element, ymapsLoader, config, debounce) {
     "use strict";
-    function initAutoFit(map, collection) {
-        //brought from underscore http://underscorejs.org/#debounce
-        var markerMargin = 0.1,
-            fitMarkers = debounce(function () {
-                if(collection.getLength() > 0) {
-                    var bounds = collection.getBounds(),
-                    //make some margins from
-                        topRight = [
-                            bounds[1][0] + markerMargin,
-                            bounds[1][1] + markerMargin
-                        ],
-                        bottomLeft = [
-                            bounds[0][0] - markerMargin,
-                            bounds[0][1] - markerMargin
-                        ];
-                    map.setBounds([bottomLeft, topRight], {checkZoomRange: true});
-                }
-            }, 100);
-        collection.events.add('boundschange', fitMarkers);
+    function initAutoFit(map, collection, ymaps) {
+        collection.events.add('boundschange', debounce(function () {
+            if(collection.getLength() > 0) {
+                map.setBounds(collection.getBounds(), {
+                    checkZoomRange: true,
+                    zoomMargin: config.fitMarkersZoomMargin
+                });
+            }
+        }, 100));
     }
     var self = this;
     ymapsLoader.ready(function(ymaps) {
@@ -124,7 +116,7 @@ angular.module('ymaps', [])
         $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
         self.map.geoObjects.add($scope.markers);
         if(config.fitMarkers) {
-            initAutoFit(self.map, $scope.markers);
+            initAutoFit(self.map, $scope.markers, ymaps);
         }
         var updatingBounds, moving;
        $scope.$watch('center', function(newVal) {
@@ -138,7 +130,7 @@ angular.module('ymaps', [])
         }, true);
         $scope.$watch('zoom', function(zoom) {
             if(updatingBounds) {
-               return; 
+               return;
             }
             self.map.setZoom(zoom, {checkZoomRange: true});
         });
