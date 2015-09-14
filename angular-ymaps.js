@@ -97,7 +97,8 @@ angular.module('ymaps', [])
                     zoomMargin: config.fitMarkersZoomMargin
                 }).then(function () {
                   map.options.set('maxZoom', maxZoomBefore);
-                  map.setZoom(map.getZoom()); // Setting current zoom. Without this the plus button on the yandex map doesn't get updated after .set('maxZoom').
+                  //we need to manually update zoom, because of http://clubs.ya.ru/mapsapi/replies.xml?item_no=59735
+                  map.setZoom(map.getZoom());
                 });
             }
         }, 100));
