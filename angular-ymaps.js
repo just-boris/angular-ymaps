@@ -90,9 +90,14 @@ angular.module('ymaps', [])
     function initAutoFit(map, collection, ymaps) {
         collection.events.add('boundschange', debounce(function () {
             if(collection.getLength() > 0) {
+                var maxZoomBefore = map.options.get('maxZoom');
+                map.options.set('maxZoom', $scope.zoom);
                 map.setBounds(collection.getBounds(), {
                     checkZoomRange: true,
                     zoomMargin: config.fitMarkersZoomMargin
+                }).then(function () {
+                  map.options.set('maxZoom', maxZoomBefore);
+                  map.setZoom(map.getZoom()); // Setting current zoom. Without this the plus button on the yandex map doesn't get updated after .set('maxZoom').
                 });
             }
         }, 100));

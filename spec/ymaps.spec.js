@@ -43,13 +43,18 @@ describe('Ymaps', function() {
             $provide.value('debounce', angular.identity);
             $provide.factory('ymapsLoader', function($q) {
                 mapMock = {
+                    options: jasmine.createSpyObj('mapOptions', ['get', 'set']),
                     events: jasmine.createSpyObj('mapEvents', ['add']),
                     panTo: jasmine.createSpy('panSpy').and.callFake(function() {
                         this.deferred = $q.defer();
                         this.deferred.promise.always = this.deferred.promise.finally;
                         return this.deferred.promise;
                     }),
-                    setBounds: jasmine.createSpy('mapBounds'),
+                    setBounds: jasmine.createSpy('mapBounds').and.callFake(function() {
+                        this.deferred = $q.defer();
+                        this.deferred.promise.always = this.deferred.promise.finally;
+                        return this.deferred.promise;
+                    }),
                     setZoom: jasmine.createSpy('zoomSpy'),
                     controls: jasmine.createSpyObj('mapObjControls', ['add']),
                     geoObjects: jasmine.createSpyObj('mapObjElements', ['add'])
@@ -69,7 +74,7 @@ describe('Ymaps', function() {
                     GeoObjectCollection: jasmine.createSpy('geoObjectsCollection').and.returnValue(geoObjectsMock),
                     Placemark: jasmine.createSpy('placemark').and.returnValue(placemarkMock)
                 };
-                return { 
+                return {
                     ready: function(callback) {callback(ymapsMock);}
                 };
             });
@@ -146,7 +151,7 @@ describe('Ymaps', function() {
             scope.$apply();
             callback(new YaEvent({newCenter: [62.16, 34.56], newZoom: 23}));
             expect(scope.center).toEqual([62.16, 34.56]);
-        });        
+        });
 
         it('should add nested markers to map', function() {
             createElement(
