@@ -5,7 +5,7 @@
     "prepublish": "bower install",
     "test": "grunt"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": "git@github.com:just-boris/angular-ymaps.git",
   "dependencies": {},
   "devDependencies": {
