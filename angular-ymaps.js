@@ -93,6 +93,8 @@ angular.module('ymaps', [])
                 map.setBounds(collection.getBounds(), {
                     checkZoomRange: true,
                     zoomMargin: config.fitMarkersZoomMargin
+                }).then(function () {
+                  if(map.getZoom() > $scope.zoom) map.setZoom($scope.zoom);
                 });
             }
         }, 100));
