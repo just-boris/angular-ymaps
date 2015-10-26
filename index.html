@@ -104,9 +104,9 @@
 <ul>
 <li><strong>coordinates</strong>(Array) - массив из двух чисел, широта и долгота маркера на карте (обязательный)</li>
 <li><strong>index</strong>(String) - текст, который пишется на маркере</li>
-<li><strong>properties</strong>(Object) - свойства метки, передаются в <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a>. Здесь может быть текст балуна, который
+<li><strong>properties</strong>(Object) - свойства метки, передаются в <a href="https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/GeoObject-docpage/">ymaps.GeoObject</a>. Здесь может быть текст балуна, который
 открывается при нажатии на метку, или всплывающей при наведении подсказки. Подробнее - в
-<a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">документации Яндекс</a>, описание параметра properties.</li>
+<a href="https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/GeoObject-docpage/">документации Яндекс</a>, описание параметра properties.</li>
 </ul>
 
 <h4>Глобальные настройки</h4>
@@ -114,14 +114,19 @@
 <p>Можно управлять видом и функциоальностью карты через свойства, вынесенные в константу <code>ymapsConfig</code>:</p>
 
 <ul>
-<li><strong>apiUrl</strong>(String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
-По умолчанию загружается <code>2.0-stable</code></li>
-<li><strong>mapBehaviors</strong>(Array) - возможные поведения карты, массив ключей, которые принимает <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
+<li><strong>apiUrl</strong> (String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
+По умолчанию загружается <code>2.1-stable</code></li>
+<li><strong>mapBehaviors</strong> (Array) - возможные поведения карты, массив ключей, которые принимает <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml">ymaps.map.behavior.Manager</a>.
 Стандартное значение: <em>['default']</em></li>
-<li><strong>markerOptions</strong>(Object) - опции, передаваемые <a href="http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml">ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров
-на карте. Стандартное значение: <em>{preset: 'twirl#darkgreenIcon'}</em></li>
-<li><strong>fitMarkers</strong>(Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было видно все точки на
+<li><strong>markerOptions</strong> (Object) - опции, передаваемые <a href="https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/GeoObject-docpage/">ymaps.GeoObject</a>, то есть настройки внешнего вида и поведения маркеров
+на карте. Стандартное значение: <em>{preset: 'islands#darkgreenIcon'}</em></li>
+<li><strong>clusterize</strong> (Boolean) – объединять ли маркеры в кластеры. По умолчанию <em>false</em></li>
+<li><strong>clusterOptions</strong> (Object) - опции кластера <a href="https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Clusterer-docpage/">ymaps.Clusterer</a>, применяются если включена кластеризация. Стандартное
+значение: <em>{preset: 'islands#darkGreenClusterIcons'}</em></li>
+<li><strong>fitMarkers</strong> (Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было видно все точки на
 карте. Стандартное значение: <em>true</em></li>
+<li><strong>fitMarkersZoomMargin</strong> (Boolean) – отступ от границ карты при подстраивании масштаба под маркеры. Стандартное
+значение:&nbsp;<em>40</em>&nbsp;(px)</li>
 </ul>
     <h3 id="examples">Примеры использования</h3>
     
