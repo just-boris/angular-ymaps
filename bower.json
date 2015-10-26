@@ -1,7 +1,7 @@
 {
   "name": "angular-ymaps",
   "main": "angular-ymaps.js",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "homepage": "https://github.com/just-boris/angular-ymaps",
   "authors": [
     "Boris <just-boris@hotmail.com>"
