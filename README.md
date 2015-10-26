@@ -1,5 +1,7 @@
 [Angular JS]: http://angularjs.org
-[ymaps.GeoObject]: http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/GeoObject.xml
+[ymaps.GeoObject]: https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/GeoObject-docpage/
+[ymaps.Clusterer]: https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Clusterer-docpage/
+
 Angular-ymaps [![Build Status](https://travis-ci.org/just-boris/angular-ymaps.svg?branch=master)](https://travis-ci.org/just-boris/angular-ymaps)
 =============
 
@@ -54,11 +56,16 @@ Yandex Maps API as an Angular JS direcitive.
 
 Можно управлять видом и функциоальностью карты через свойства, вынесенные в константу `ymapsConfig`:
 
-* **apiUrl**(String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
-    По умолчанию загружается `2.0-stable`
-* **mapBehaviors**(Array) - возможные поведения карты, массив ключей, которые принимает [ymaps.map.behavior.Manager](http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml).
+* **apiUrl** (String) - ссылка для загрузки API карт. Может переопределяться для загрузки другой версии.
+    По умолчанию загружается `2.1-stable`
+* **mapBehaviors** (Array) - возможные поведения карты, массив ключей, которые принимает [ymaps.map.behavior.Manager](http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml).
     Стандартное значение: *['default']*
-* **markerOptions**(Object) - опции, передаваемые [ymaps.GeoObject], то есть настройки внешнего вида и поведения маркеров
-на карте. Стандартное значение: *{preset: 'twirl#darkgreenIcon'}*
-* **fitMarkers**(Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было видно все точки на
+* **markerOptions** (Object) - опции, передаваемые [ymaps.GeoObject], то есть настройки внешнего вида и поведения маркеров
+на карте. Стандартное значение: *{preset: 'islands#darkgreenIcon'}*
+* **clusterize** (Boolean) – объединять ли маркеры в кластеры. По умолчанию *false*
+* **clusterOptions** (Object) - опции кластера [ymaps.Clusterer], применяются если включена кластеризация. Стандартное
+значение: *{preset: 'islands#darkGreenClusterIcons'}*
+* **fitMarkers** (Boolean) - автоматически подстраивать видимую область и масштаб карты, чтобы было видно все точки на
 карте. Стандартное значение: *true*
+* **fitMarkersZoomMargin** (Boolean) – отступ от границ карты при подстраивании масштаба под маркеры. Стандартное
+значение:&nbsp;*40*&nbsp;(px)
