@@ -69,7 +69,7 @@ angular.module('ymaps', [])
         preset: 'islands#darkgreenIcon'
     },
     fitMarkers: true,
-    forMarkersZoomMargin: 40,
+    fitMarkersZoomMargin: 40,
 })
 //brought from underscore http://underscorejs.org/#debounce
 .value('debounce', function (func, wait) {

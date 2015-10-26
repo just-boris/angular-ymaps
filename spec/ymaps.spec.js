@@ -178,7 +178,7 @@ describe('Ymaps', function() {
                 geoObjectsMock.getBounds.and.returnValue([[55.23, 30.22], [58.35, 36.18]]);
                 var callback = geoObjectsMock.events.add.calls.argsFor(0)[1];
                 callback();
-                expect(mapMock.setBounds).toHaveBeenCalled();
+                expect(mapMock.setBounds).toHaveBeenCalledWith([[ 55.23, 30.22 ], [ 58.35, 36.18 ]], { checkZoomRange: true, zoomMargin: 40 });
             });
 
             it('should not update map bounds when collection is empty', function() {
