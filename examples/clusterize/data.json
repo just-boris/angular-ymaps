@@ -1,0 +1,4 @@
+{
+    "title": "Кластеризация",
+    "description": "Для объединения маркеров в кластер нужно выставить опции <code>clusterize</code> значение <code>true</code>. Настройки иконки кластера задаются опцией <code>clusterOptions</code>"
+}

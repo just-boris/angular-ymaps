@@ -1,4 +1,6 @@
-angular.module('YmapsDemo', ['ymaps']).controller('MapCtrl', function ($scope) {
+angular.module('YmapsDemo', ['ymaps']).config(function(ymapsConfig) {
+    ymapsConfig.clusterize = true;
+}).controller('MapCtrl', function ($scope) {
     function generateMarkers(tlCorner, brCorner, count) {
         var deltaLat = tlCorner[0] - brCorner[0],
             deltaLon = brCorner[1] - tlCorner[1],

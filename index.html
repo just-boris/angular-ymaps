@@ -52,7 +52,7 @@
     </yandex-map>
 </div>
 <div class="description" id="docs">
-    <h1>Angular-ymaps <a href="https://travis-ci.org/just-boris/angular-ymaps"><img src="https://travis-ci.org/just-boris/angular-ymaps.png" alt="Travis" title="" /></a></h1>
+    <h1>Angular-ymaps <a href="https://travis-ci.org/just-boris/angular-ymaps"><img src="https://travis-ci.org/just-boris/angular-ymaps.svg?branch=master" alt="Build Status" title="" /></a></h1>
 
 <p>Yandex Maps API as an Angular JS direcitive.</p>
 
@@ -65,7 +65,7 @@
 
 <ul>
 <li>Скачать <a href="http://catatron.com/angular-ymaps/angular-ymaps.js">библиотеку</a> или ее <a href="http://catatron.com/angular-ymaps/angular-ymaps.min.js">упакованную версию</a></li>
-<li>Подключить скрипт на страницу 
+<li>Подключить скрипт на страницу
 <code>&lt;script src="angular-ymaps.js"&gt;&lt;/script&gt;</code></li>
 <li>Добавить модуль <code>ymaps</code> в зависимости своего angular-приложения
 <code>angular.module('MyApp', ['ymaps'])</code></li>
@@ -187,6 +187,36 @@ angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).controller(&#x27;MapCtrl&
         center: [53.57, 37.13], zoom: 12
     };
 });</code></pre>
+    
+        <div class="page-header">
+            <a href="examples/clusterize/" class="btn pull-right">Смотреть демо</a>
+            <h4>Кластеризация</h4>
+        </div>
+        <p>Для объединения маркеров в кластер нужно выставить опции <code>clusterize</code> значение <code>true</code>. Настройки иконки кластера задаются опцией <code>clusterOptions</code></p>
+        <h5>HTML</h5>
+        <pre ng-non-bindable><code data-language="HTML">&lt;div ng-controller=&quot;MapCtrl&quot;&gt;
+    &lt;yandex-map center=&quot;map.center&quot; zoom=&quot;map.zoom&quot;&gt;
+        &lt;ymap-marker ng-repeat=&quot;marker in markers&quot; index=&quot;$index+1&quot; coordinates=&quot;marker&quot;&gt;&lt;/ymap-marker&gt;
+    &lt;/yandex-map&gt;
+&lt;/div&gt;
+</code></pre>
+        <h5>Javascript</h5>
+        <pre ng-non-bindable><code data-language="javascript">angular.module(&#x27;MyApp&#x27;, [&#x27;ymaps&#x27;]).config(function(ymapsConfig) {
+    //включим кластеризацию
+    ymapsConfig.clusterize = true;
+}).controller(&#x27;MapCtrl&#x27;, function($scope) {
+    // маркеры для кластера
+    $scope.markers = [
+        [54.46, 38.31],
+        [54.57, 38.13],
+        [54.50, 38.59]
+    ];
+    //настройки положения карты
+    $scope.map = {
+        center: [54.57, 38.31], zoom: 7
+    };
+});
+</code></pre>
     
         <div class="page-header">
             <a href="examples/markers-text/" class="btn pull-right">Смотреть демо</a>
