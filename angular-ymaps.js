@@ -68,8 +68,12 @@ angular.module('ymaps', [])
     markerOptions: {
         preset: 'islands#darkgreenIcon'
     },
+    clusterOptions: {
+      preset: 'islands#darkGreenClusterIcons'
+    },
     fitMarkers: true,
     fitMarkersZoomMargin: 40,
+    clusterize: false
 })
 //brought from underscore http://underscorejs.org/#debounce
 .value('debounce', function (func, wait) {
@@ -119,10 +123,16 @@ angular.module('ymaps', [])
             zoom     : $scope.zoom || 0,
             behaviors: config.mapBehaviors
         });
-        $scope.markers = new ymaps.GeoObjectCollection({}, config.markerOptions);
-        self.map.geoObjects.add($scope.markers);
+        var collection = new ymaps.GeoObjectCollection({}, config.markerOptions);
+        if(config.clusterize) {
+          $scope.markers = new ymaps.Clusterer(config.clusterOptions);
+          collection.add($scope.markers);
+        } else {
+          $scope.markers = collection;
+        }
+        self.map.geoObjects.add(collection);
         if(config.fitMarkers) {
-            initAutoFit(self.map, $scope.markers, ymaps);
+            initAutoFit(self.map, collection, ymaps);
         }
         var updatingBounds, moving;
        $scope.$watch('center', function(newVal) {
@@ -186,7 +196,7 @@ angular.module('ymaps', [])
             properties: '=',
             options: '='
         },
-        link    : function ($scope, elm, attr, mapCtrl) {
+        link: function ($scope, elm, attr, mapCtrl) {
             var marker;
             function pickMarker() {
                 var coord = [
@@ -194,11 +204,9 @@ angular.module('ymaps', [])
                     parseFloat($scope.coordinates[1])
                 ];
                 if (marker) {
-                    marker.geometry.setCoordinates(coord);
+                    mapCtrl.removeMarker(marker);
                 }
-                else {
-                    marker = mapCtrl.addMarker(coord, angular.extend({iconContent: $scope.index}, $scope.properties), $scope.options);
-                }
+                marker = mapCtrl.addMarker(coord, angular.extend({iconContent: $scope.index}, $scope.properties), $scope.options);
             }
 
             $scope.$watch("index", function (newVal) {

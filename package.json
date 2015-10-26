@@ -3,6 +3,7 @@
   "name": "angular-ymaps",
   "scripts": {
     "prepublish": "bower install",
+    "dev": "karma start --no-single-run",
     "test": "grunt"
   },
   "version": "0.0.5",
@@ -24,7 +25,6 @@
     "karma-firefox-launcher": "^0.1.6",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-jasmine": "^0.3.6",
-    "karma-phantomjs-launcher": "^0.2.0",
     "node-markdown": "^0.1.1",
     "phantomjs": "^1.9.17",
     "underscore": "^1.8.3"

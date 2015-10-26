@@ -22,6 +22,7 @@ module.exports = function (grunt) {
         'simple-marker',
         'color-marker',
         'markers-array',
+        'clusterize',
         'markers-text',
         'balloons',
         'update-center',
