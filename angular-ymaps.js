@@ -89,7 +89,7 @@ angular.module('ymaps', [])
         timeout = setTimeout(later, wait);
     };
 })
-.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', function ($scope, $element, ymapsLoader, config, debounce) {
+.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', '$rootScope', function ($scope, $element, ymapsLoader, config, debounce, $rootScope) {
     "use strict";
     function initAutoFit(map, collection, ymaps) {
         collection.events.add('boundschange', debounce(function () {
@@ -162,6 +162,14 @@ angular.module('ymaps', [])
             });
             updatingBounds = false;
         });
+        
+        self.registerEventEmitters = function(events){
+        	var eventList = events.replace(', ', ',').split(',');
+	        self.map.events.add(eventList, function (e) {
+			    var eventName = 'ymaps-' + e.get('type');
+			    $rootScope.$broadcast(eventName, e);
+			});
+        }
 
     });
 }])
@@ -180,6 +188,9 @@ angular.module('ymaps', [])
                 transcludeFn(function( copy ) {
                     element.append(copy);
                 });
+                if(attrs.events){
+                	ctrl.registerEventEmitters(attrs.events);
+                }                
             });
         },
         controller: 'YmapController'
