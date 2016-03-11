@@ -41,17 +41,16 @@ Yandex Maps API as an Angular JS direcitive.
 * **center**(Array) - массив из двух чисел, широта и долгота центра карты
 * **zoom**(Number) - число, от 0 до 23, масштаб карты. Во избежание ошибок нужно задавать разрешенный масштаб для
 указанной области
-* **events**(String) - строка с перечислением событий карты, которые нужно слушать. Нужно указывать
-оригинальные названия событий Яндекс Карт. [Примеры](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Circle-docpage/#events-summary).
-Например: `events="balloonopen, balloonclose"`. После того, как этот аттрибут установлен,
-событие можно слушать, например в контроллере, при этом слушать нужно событие с именем формата
-`ymaps-*оригинальное-событие*` (например, если оригинальное событие в Яндекс Картах называется `balloonopen`,
-то слушать нужно `ymaps-balloonopen`).
+
+Необязательные аттрибуты:
+** События **
+* **ymap-eventName**(Function/Callback) - Вместо `eventName` нужно указать называние события карты, которое вы хотите слушать. 
+Например: `ymap-baloonopen`. Нужно указывать оригинальные названия событий Яндекс Карт. [Примеры](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Circle-docpage/#events-summary).
+В качестве значения аттрибута нужно указать callback функцию. Пример: `ymap-baloonopen="doSomething()"`. Также callback
+может принимать в качестве аргумента `$event` - оригинальный объект [Event](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Event-docpage/) передаваемый Яндекс Картами. Пример: `ymap-baloonopen="doSomething($event)"`
 
 ```javascript
-	$scope.$on('ymaps-balloonopen', function(e, yEvent){
-		console.log(yEvent); // оригинальный объект Event передаваемый Яндекс Картами
-	})
+	<yandex-map ymap-balloonopen="doSomething($event)" ymap-balloonclose="doSomethingElse($event)"></yandex-map>
 ```
 [Документация объекта Event](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Event-docpage/)
 
