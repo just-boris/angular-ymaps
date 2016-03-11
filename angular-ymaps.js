@@ -179,7 +179,7 @@ angular.module('ymaps', [])
 								event: e
 						});
 					});
-        }
+        };
 
     });
 }])
@@ -236,7 +236,7 @@ angular.module('ymaps', [])
 							// callback specified as an attribute value, we need to find attribute name and return its value							
 							var attributeNameParts = [
 								ymapsConfig.eventPrefixInDirective,
-								yandexOrigEventName.replace(/^[a-zA-Z]/, function upperCaseFirstChar(letter){ return letter.toUpperCase() })								
+								yandexOrigEventName.replace(/^[a-zA-Z]/, function upperCaseFirstChar(letter){ return letter.toUpperCase(); })								
 							];
 							
 							var attributeName = attributeNameParts.join('');
@@ -246,7 +246,7 @@ angular.module('ymaps', [])
 						$scope.$on(EVENTS.source.yandex.new, function(e, data){ 
 							var callback = $parse( findCallback( data.eventName ) );
 							callback($scope.$parent, {$event: data.event});
-						})
+						});
 				},
         controller: 'YmapController'
     };
