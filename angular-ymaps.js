@@ -108,6 +108,26 @@ angular.module('ymaps', [])
             }
         }, 100));
     }
+    function locateAuto(ymaps, continueCallback) {
+        if ($scope.autocenter) {
+            ymaps.geolocation.get({ timeout: 2000 }).then(function (res) {
+                var mapParams = {
+                    center: res.geoObjects.position,
+                    bounds: res.geoObjects.get(0).properties.get('boundedBy'),
+                    zoom: $scope.zoom
+                };
+                if ($scope.autozoom) {
+                    var mapContainer = $element[0].getBoundingClientRect();
+                    mapParams.zoom = ymaps.util.bounds
+                    .getCenterAndZoom(
+                        mapParams.bounds,
+                        [mapContainer.width, mapContainer.height]
+                    ).zoom;
+                }
+                continueCallback(mapParams);
+            }, function () {});
+        }
+    }
     var self = this;
     ymapsLoader.ready(function(ymaps) {
         self.addMarker = function(coordinates, properties, options) {
@@ -164,7 +184,15 @@ angular.module('ymaps', [])
             });
             updatingBounds = false;
         });
-
+        locateAuto(ymaps, function(mapParams) {
+            var lst = updatingBounds;
+            updatingBounds = false;
+            $scope.$apply(function() {
+                $scope.center = mapParams.center;
+                $scope.zoom = mapParams.zoom;
+            });
+            updatingBounds = lst;
+        });
     });
 }])
 .directive('yandexMap', ['ymapsLoader', function (ymapsLoader) {
@@ -174,6 +202,9 @@ angular.module('ymaps', [])
         terminal: true,
         transclude: true,
         scope: {
+            autocenter: '=',
+            autozoom: '=',
+
             center: '=',
             zoom: '='
         },
