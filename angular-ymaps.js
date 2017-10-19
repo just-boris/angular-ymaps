@@ -1,4 +1,4 @@
-/*! angular-ymaps 2015-10-27 */
+/*! angular-ymaps 2017-10-19 */
 /*global angular*/
 angular.module('ymaps', [])
 .factory('$script', ['$q', '$rootScope', function ($q, $rootScope) {
@@ -66,6 +66,7 @@ angular.module('ymaps', [])
 .constant('ymapsConfig', {
     apiUrl: '//api-maps.yandex.ru/2.1/?load=package.standard,package.clusters&mode=release&lang=ru-RU&ns=ymaps',
     mapBehaviors: ['default'],
+    mapControls: ['default'],
     markerOptions: {
         preset: 'islands#darkgreenIcon'
     },
@@ -122,7 +123,8 @@ angular.module('ymaps', [])
         self.map = new ymaps.Map($element[0], {
             center   : $scope.center || [0, 0],
             zoom     : $scope.zoom || 0,
-            behaviors: config.mapBehaviors
+            behaviors: config.mapBehaviors,
+            controls: config.mapControls
         });
         var collection = new ymaps.GeoObjectCollection({}, config.markerOptions);
         if(config.clusterize) {
