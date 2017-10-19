@@ -60,6 +60,8 @@ Yandex Maps API as an Angular JS direcitive.
     По умолчанию загружается `2.1-stable`
 * **mapBehaviors** (Array) - возможные поведения карты, массив ключей, которые принимает [ymaps.map.behavior.Manager](http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.behavior.Manager.xml).
     Стандартное значение: *['default']*
+* **mapControls** (Array) - возможные элементы управления карты, массив ключей, которые принимает [ymaps.map.control.Manager](http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/map.control.Manager.xml).
+    Стандартное значение: *['default']*
 * **markerOptions** (Object) - опции, передаваемые [ymaps.GeoObject], то есть настройки внешнего вида и поведения маркеров
 на карте. Стандартное значение: *{preset: 'islands#darkgreenIcon'}*
 * **clusterize** (Boolean) – объединять ли маркеры в кластеры. По умолчанию *false*
