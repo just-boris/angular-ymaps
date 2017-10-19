@@ -42,6 +42,18 @@ Yandex Maps API as an Angular JS direcitive.
 * **zoom**(Number) - число, от 0 до 23, масштаб карты. Во избежание ошибок нужно задавать разрешенный масштаб для
 указанной области
 
+Необязательные аттрибуты:
+** События **
+* **ymap-eventName**(Function/Callback) - Вместо `eventName` нужно указать называние события карты, которое вы хотите слушать. 
+Например: `ymap-baloonopen`. Нужно указывать оригинальные названия событий Яндекс Карт. [Примеры](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Circle-docpage/#events-summary).
+В качестве значения аттрибута нужно указать callback функцию. Пример: `ymap-baloonopen="doSomething()"`. Также callback
+может принимать в качестве аргумента `$event` - оригинальный объект [Event](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Event-docpage/) передаваемый Яндекс Картами. Пример: `ymap-baloonopen="doSomething($event)"`
+
+```javascript
+	<yandex-map ymap-balloonopen="doSomething($event)" ymap-balloonclose="doSomethingElse($event)"></yandex-map>
+```
+[Документация объекта Event](https://tech.yandex.ru/maps/doc/jsapi/2.0/ref/reference/Event-docpage/)
+
 ####Тег ymap-marker:
 
 Может использоваться только внутри тега карты, добавляет на нее точку. Имеются следующие атрибуты

@@ -74,7 +74,15 @@ angular.module('ymaps', [])
     },
     fitMarkers: true,
     fitMarkersZoomMargin: 40,
-    clusterize: false
+    clusterize: false,
+		eventPrefixInDirective: 'ymap'
+})
+.constant('EVENTS', {
+	source: {
+		yandex: {
+			new: 'new-event'
+		}
+	}
 })
 //brought from underscore http://underscorejs.org/#debounce
 .value('debounce', function (func, wait) {
@@ -90,7 +98,7 @@ angular.module('ymaps', [])
         timeout = setTimeout(later, wait);
     };
 })
-.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', function ($scope, $element, ymapsLoader, config, debounce) {
+.controller('YmapController', ['$scope', '$element', 'ymapsLoader', 'ymapsConfig', 'debounce', '$rootScope', 'EVENTS', function ($scope, $element, ymapsLoader, config, debounce, $rootScope, EVENTS) {
     "use strict";
     function initAutoFit(map, collection, ymaps) {
         collection.events.add('boundschange', debounce(function () {
@@ -110,7 +118,8 @@ angular.module('ymaps', [])
     }
     var self = this;
     ymapsLoader.ready(function(ymaps) {
-        self.addMarker = function(coordinates, properties, options) {
+
+			self.addMarker = function(coordinates, properties, options) {
             var placeMark = new ymaps.Placemark(coordinates, properties, options);
             $scope.markers.add(placeMark);
 
@@ -164,10 +173,19 @@ angular.module('ymaps', [])
             });
             updatingBounds = false;
         });
+        
+        self.registerEventEmitters = function(events){					
+					self.map.events.add(events, function (e) {
+						$scope.$broadcast(EVENTS.source.yandex.new, {
+								eventName: e.get('type'),
+								event: e
+						});
+					});
+        };
 
     });
 }])
-.directive('yandexMap', ['ymapsLoader', function (ymapsLoader) {
+.directive('yandexMap', ['ymapsLoader', '$parse', 'ymapsConfig', 'EVENTS', function (ymapsLoader, $parse, ymapsConfig, EVENTS) {
     "use strict";
     return {
         restrict: 'EA',
@@ -178,12 +196,60 @@ angular.module('ymaps', [])
             zoom: '='
         },
         link: function($scope, element, attrs, ctrl, transcludeFn) {
+										
             ymapsLoader.ready(function() {
                 transcludeFn(function( copy ) {
                     element.append(copy);
                 });
+
+								var events = getEventsToFollow();
+							
+								if(events.length > 0){
+									ctrl.registerEventEmitters(events);
+								}
+							
             });
-        },
+					
+						function getEventsToFollow(){
+							// @return {array} List of event names normalized to Yandex format
+							
+							var allAttributes = Object.getOwnPropertyNames(attrs);
+							var eventAttributes = [];
+							var events = [];		
+							
+							eventAttributes = allAttributes.filter(eventAtrributesFilter);
+							
+							events = eventAttributes.map(normalizeName);
+							
+							function eventAtrributesFilter(attrName){
+								var re = new RegExp('^'+ ymapsConfig.eventPrefixInDirective +'[A-Z]'); // i.e: will match ymapB in 'ymapBaloonopen'
+								return re.test(attrName);
+							}
+														
+							function normalizeName(eventName){
+								// turn 'ymapBaloonopen' to 'baloonopen' (yandex original format for event name)
+								return eventName.toLowerCase().substr( ymapsConfig.eventPrefixInDirective.length );
+							}
+							
+							return events;
+						}
+					
+						function findCallback(yandexOrigEventName){
+							// callback specified as an attribute value, we need to find attribute name and return its value							
+							var attributeNameParts = [
+								ymapsConfig.eventPrefixInDirective,
+								yandexOrigEventName.replace(/^[a-zA-Z]/, function upperCaseFirstChar(letter){ return letter.toUpperCase(); })								
+							];
+							
+							var attributeName = attributeNameParts.join('');
+							return attrs[ attributeName ];
+						}
+					
+						$scope.$on(EVENTS.source.yandex.new, function(e, data){ 
+							var callback = $parse( findCallback( data.eventName ) );
+							callback($scope.$parent, {$event: data.event});
+						});
+				},
         controller: 'YmapController'
     };
 }])
