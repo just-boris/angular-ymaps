@@ -21,6 +21,7 @@ module.exports = function (grunt) {
         examples = [
         'simple-marker',
         'color-marker',
+        'controls',
         'markers-array',
         'clusterize',
         'markers-text',
